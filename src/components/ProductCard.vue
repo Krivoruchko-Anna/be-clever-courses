@@ -1,12 +1,12 @@
 <template>
   <div class="product-card">
-    <img :src="`./src/assets/photo/products/${product.image}`"
+    <img :src="`/photo/products/${product.image}`"
          :alt="product.title" class="product-card__image" />
     <div class="product-card__content">
       <div class="product-card__info">
         <div class="product-card__header">
           <img class="product-card__icon"
-               :src="`./src/assets/icons/${product.icon}.svg`"
+               :src="`/icons/${product.icon}.svg`"
                alt="approach-icon"
           >
           <h3 class="product-card__title">{{ product.title }}</h3>

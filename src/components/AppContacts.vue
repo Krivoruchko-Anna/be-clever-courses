@@ -4,36 +4,36 @@
       <h2 class="app-contacts__title">Контакты</h2>
       <div class="app-contacts__wrapper">
         <div class="app-contacts__contact">
-          <img src="../assets/icons/website.svg" alt="website" class="icon">
+          <img src="/icons/website.svg" alt="website" class="icon">
           <a href="https://beclever.by/" target="_blank" class="text">www.beclever.by</a>
         </div>
         <div class="app-contacts__contact">
-          <img src="../assets/icons/instagram.svg" alt="website" class="icon">
+          <img src="/icons/instagram.svg" alt="website" class="icon">
           <a href="https://instagram.com/i.kovalenko_beclever" target="_blank" class="text">i.kovalenko_beclever</a>
         </div>
         <div class="app-contacts__contact">
-          <img src="../assets/icons/phone.svg" alt="website" class="icon">
+          <img src="/icons/phone.svg" alt="website" class="icon">
           <a href="tel:+375259964261" class="text">+375 25 966-42-61</a>
         </div>
       </div>
-      <img src="../assets/photo/clover.jpg" class="app-contacts__clover" alt="clover" />
+      <img src="/photo/clover.jpg" class="app-contacts__clover" alt="clover" />
 
     </div>
     <div class="app-contacts__photos">
       <div class="app-contacts__photos-top">
         <img
-          src="../assets/photo/contacts/contacts_1.jpg"
+          src="/photo/contacts/contacts_1.jpg"
           alt="group-photo"
           class="app-contacts__photo-top"
         >
         <img
-          src="../assets/photo/contacts/contacts_2.jpg"
+          src="/photo/contacts/contacts_2.jpg"
           alt="group-photo"
           class="app-contacts__photo-top"
         >
       </div>
       <img
-        src="../assets/photo/contacts/contacts_3.jpg"
+        src="/photo/contacts/contacts_3.jpg"
         alt="group-photo"
         class="app-contacts__photo-bottom"
       >

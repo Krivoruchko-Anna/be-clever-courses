@@ -1,7 +1,7 @@
 <template>
   <div class="question-item">
     <div class="question-item__header">
-      <img class="question-item__icon" src="../assets/icons/question.svg" alt="" />
+      <img class="question-item__icon" src="/icons/question.svg" alt="" />
       <div class="question-item__question">{{ question.question }}</div>
     </div>
 

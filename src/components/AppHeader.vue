@@ -1,6 +1,12 @@
 <template>
   <header class="header">
-    <nav class="header__navbar">
+    <button class="burger" @click="toggleMenu" aria-label="Открыть меню">
+      <span :class="{ open: menuOpen }"></span>
+      <span :class="{ open: menuOpen }"></span>
+      <span :class="{ open: menuOpen }"></span>
+    </button>
+
+    <nav class="header__navbar" :class="{ open: menuOpen }">
       <a
         v-for="(item, index) in menuItems"
         :key="index"
@@ -22,6 +28,13 @@ const menuItems = [
   { label: "Консультация" },
   { label: "Документы" },
 ];
+
+import { ref } from 'vue'
+
+const menuOpen = ref(false)
+function toggleMenu() {
+  menuOpen.value = !menuOpen.value
+}
 </script>
 
 <style lang="scss" scoped>
@@ -74,9 +87,73 @@ const menuItems = [
     }
   }
 
+  .burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 20;
+
+    span {
+      display: block;
+      height: 1px;
+      width: 100%;
+      background: var(--killarney);
+      margin: 3px 0;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+    span.open:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+    span.open:nth-child(2) {
+      opacity: 0;
+    }
+    span.open:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+
   @media (max-width: 660px) {
-    padding: 16px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 12px;
     height: auto;
+    background-color: var(--white);
+
+    .burger {
+      display: flex;
+    }
+
+    &__navbar {
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      flex-direction: column;
+      gap: 0;
+      padding: 0;
+      display: none;
+      z-index: 15;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+      &.open {
+        display: flex;
+      }
+
+      a {
+        padding: 16px 20px;
+        border-bottom: 1px solid #eee;
+      }
+    }
   }
 }
 </style>

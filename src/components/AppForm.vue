@@ -117,6 +117,7 @@ const hintText = computed(() => {
     @media (max-width: 660px) {
       font-size: 16px;
       padding: 16px 12px;
+      text-align: center;
     }
   }
 

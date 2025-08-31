@@ -4,7 +4,7 @@
     :class="{'--top': isTop, '--left': isLeft, '--right': isRight, '--bottom': isBottom}"
   >
     <div class="advantage-item__header">
-      <img class="advantage-item__icon" src="../assets/icons/done.svg" alt="" />
+      <img class="advantage-item__icon" src="/icons/done.svg" alt="" />
       <div class="advantage-item__title">{{ advantage.title }}</div>
     </div>
 
@@ -16,7 +16,7 @@
           :key="i"
           class="advantage-item__paragraph"
         >
-          <img v-if="advantage.bullets" src="../assets/icons/target.svg" alt="" />
+          <img v-if="advantage.bullets" src="/icons/target.svg" alt="" />
           {{ p }}
         </div>
       </div>

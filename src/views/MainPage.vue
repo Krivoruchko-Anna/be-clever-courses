@@ -3,7 +3,7 @@
     <AppHeader />
     <main class="main">
       <section class="main__promo">
-        <img src="../assets/photo/main.png" alt="group-photo" class="main__promo-img">
+        <img src="/photo/main.png" alt="group-photo" class="main__promo-img">
         <div class="container">
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
@@ -47,7 +47,7 @@
 
           <div class="container">
             <div class="main__teacher-wrapper">
-              <img src="../assets/photo/teacher__photo.png" alt="Ирина Коваленко" class="teacher__photo">
+              <img src="/photo/teacher__photo.png" alt="Ирина Коваленко" class="teacher__photo">
               <div class="teacher__info">
                 <div class="teacher__info-name">Ирина Коваленко</div>
                 <div class="teacher__info-description">
@@ -61,7 +61,7 @@
                     class="teacher__info-approach-item"
                   >
                     <div class="header">
-                      <img :src="`./src/assets/icons/${item.icon}.svg`" alt="approach-icon">
+                      <img :src="`/icons/${item.icon}.svg`" alt="approach-icon">
                       <span>{{ item.title }}</span>
                     </div>
                     <div class="description">
@@ -305,6 +305,7 @@ const activeFormType = ref('lesson');
   &__promo-digits {
     display: flex;
     gap: 50px;
+    align-items: flex-start;
     margin-top: 38px;
 
     .digit-value {
@@ -328,15 +329,30 @@ const activeFormType = ref('lesson');
     .digit-title {
       color: var(--dove-gray);
       font-size: 16px;
+
+      @media (max-width: 400px) {
+        font-size: 14px;
+      }
     }
 
     @media (max-width: 660px) {
-      gap: 24px;
+      gap: 30px;
       font-size: 15px;
     }
 
     @media (max-width: 400px) {
-      gap: 14px;
+      gap: 16px;
+    }
+  }
+
+  &__promo-digit {
+    @media (max-width: 660px) {
+      width: fit-content;
+    }
+
+    @media (max-width: 400px) {
+      max-width: 118px;
+      min-width: 90px;
     }
   }
 
@@ -423,7 +439,7 @@ const activeFormType = ref('lesson');
         }
 
         @media (max-width: 900px) {
-          width: 220px;
+          width: 240px;
         }
       }
 
@@ -561,6 +577,10 @@ const activeFormType = ref('lesson');
     @media (max-width: 400px) {
       margin-top: 20px;
     }
+  }
+
+  @media (max-width: 660px) {
+    padding-top: 56px;
   }
 }
 </style>
