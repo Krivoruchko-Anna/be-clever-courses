@@ -7,6 +7,7 @@
     </button>
 
     <nav class="header__navbar" :class="{ open: menuOpen }">
+      <img src="/icons/logo.png" alt="clover logo" class="header__logo" />
       <a
         v-for="(item, index) in menuItems"
         :key="index"
@@ -53,10 +54,15 @@ function toggleMenu() {
     width: 40px;
     object-fit: cover;
     margin-right: 40px;
+
+    @media (max-width: 660px) {
+      display: none;
+    }
   }
 
   &__navbar {
     display: flex;
+    align-items: center;
     gap: 30px;
     padding-left: 20px;
 
@@ -150,6 +156,7 @@ function toggleMenu() {
       }
 
       a {
+        width: 100%;
         padding: 16px 20px;
         border-bottom: 1px solid #eee;
       }

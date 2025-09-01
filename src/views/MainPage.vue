@@ -346,6 +346,11 @@ const activeFormType = ref('lesson');
   }
 
   &__promo-digit {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
     @media (max-width: 660px) {
       width: fit-content;
     }
