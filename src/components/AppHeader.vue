@@ -1,10 +1,13 @@
 <template>
   <header class="header">
-    <button class="burger" @click="toggleMenu" aria-label="Открыть меню">
-      <span :class="{ open: menuOpen }"></span>
-      <span :class="{ open: menuOpen }"></span>
-      <span :class="{ open: menuOpen }"></span>
-    </button>
+    <div class="header--mobile">
+      <img src="/icons/logo.png" alt="clover logo" class="header__logo-mobile" />
+      <button class="burger" @click="toggleMenu" aria-label="Открыть меню">
+        <span :class="{ open: menuOpen }"></span>
+        <span :class="{ open: menuOpen }"></span>
+        <span :class="{ open: menuOpen }"></span>
+      </button>
+    </div>
 
     <nav class="header__navbar" :class="{ open: menuOpen }">
       <img src="/icons/logo.png" alt="clover logo" class="header__logo" />
@@ -21,14 +24,13 @@
 </template>
 
 <script setup>
-
 const menuItems = [
-  { label: "Главная", active: true },
-  { label: "Курсы" },
-  { label: "Материалы" },
-  { label: "Консультация" },
-  { label: "Документы" },
-];
+  { label: 'Главная', active: true },
+  { label: 'Курсы' },
+  { label: 'Материалы' },
+  { label: 'Консультация' },
+  { label: 'Документы' },
+]
 
 import { ref } from 'vue'
 
@@ -44,8 +46,12 @@ function toggleMenu() {
   display: flex;
   align-items: center;
   padding: 0 20px;
-  backdrop-filter: blur(4px) brightness(100%);
-  background-color: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-bottom: 1px solid var(--mercury);
   z-index: 10;
 
   &__logo {
@@ -57,6 +63,11 @@ function toggleMenu() {
     @media (max-width: 660px) {
       display: none;
     }
+  }
+
+  &__logo-mobile {
+    height: 40px;
+    width: 40px;
   }
 
   &__navbar {
@@ -73,8 +84,8 @@ function toggleMenu() {
 
   &__nav-link {
     color: var(--killarney);
-    font-family: "Mulish", Helvetica, sans-serif;
-    font-size: 18px;
+    font-family: 'Mulish', Helvetica, sans-serif;
+    font-size: 16px;
     font-weight: 500;
     text-decoration: none;
     white-space: nowrap;
@@ -92,6 +103,10 @@ function toggleMenu() {
     }
   }
 
+  &--mobile {
+    display: none;
+    width: 100%;
+  }
   .burger {
     display: none;
     flex-direction: column;
@@ -107,7 +122,7 @@ function toggleMenu() {
       display: block;
       height: 1px;
       width: 100%;
-      background: var(--killarney);
+      background: var(--la-palma);
       margin: 3px 0;
       border-radius: 2px;
       transition: 0.3s;
@@ -124,14 +139,15 @@ function toggleMenu() {
   }
 
   @media (max-width: 660px) {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
     padding: 12px;
     height: auto;
     background-color: var(--white);
+
+    &--mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .burger {
       display: flex;

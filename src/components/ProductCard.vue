@@ -36,7 +36,7 @@ defineProps({
   flex-direction: column;
   width: 460px;
   height: auto;
-  border-radius: 24px;
+  border-radius: 16px;
   transition: all 0.3s;
   cursor: pointer;
   box-shadow: 0 4px 9px #0000001a;
@@ -55,7 +55,7 @@ defineProps({
   }
 
   &__image {
-    border-radius: 24px 24px 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   &__title {
@@ -95,10 +95,14 @@ defineProps({
 
   @media (max-width: 1200px) {
     width: 360px;
+
+    &__title {
+      font-size: 16px;
+    }
   }
 
   @media (max-width: 400px) {
-    width: 300px;
+    width: 100%;
   }
 }
 </style>

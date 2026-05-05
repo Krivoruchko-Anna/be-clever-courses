@@ -1,101 +1,103 @@
 <template>
-  <div class="main__teacher">
-    <h2 class="main-title">Эксперт в Английском для детей</h2>
-    <div class="main__teacher-description">Открываем мир английского с увлечением и радостью</div>
-
+  <div class="teacher__bg">
     <div class="container">
-      <div class="main__teacher-wrapper">
-        <img src="/images/teacher.png" alt="Ирина Коваленко" class="teacher__photo" />
-        <div class="teacher__info">
-          <div class="teacher__info-name">Ирина Коваленко</div>
-          <div class="teacher__info-description">
-            Основатель и руководитель смарт-клуба BeClever (г. Гомель, Беларусь), педагог VYL&YL,
-            автор программы обучения малышей английскому языку.
-          </div>
+      <div class="teacher">
+        <h2 class="main-title">Эксперт в Английском для детей</h2>
+        <div class="teacher__description">Открываем мир английского с увлечением и радостью</div>
 
-          <div class="teacher__info-certificates">
-            <div class="embla" ref="emblaRef">
-              <div class="embla__container">
-                <div
-                  v-for="(src, i) in certificates"
-                  :key="src"
-                  class="embla__slide"
-                  :aria-label="`Слайд ${i + 1}`"
-                >
-                  <img class="cert-thumb" :src="src" alt="Сертификат" @click="openModal(i)" />
+        <div class="teacher__wrapper">
+          <img src="/images/teacher.png" alt="Ирина Коваленко" class="teacher__photo" />
+          <div class="teacher__info">
+            <div class="teacher__info-name">Ирина Коваленко</div>
+            <div class="teacher__info-description">
+              Основатель и руководитель смарт-клуба BeClever (г. Гомель, Беларусь), педагог VYL&YL,
+              автор программы обучения малышей английскому языку.
+            </div>
+
+            <div class="teacher__info-certificates">
+              <div class="embla" ref="emblaRef">
+                <div class="embla__container">
+                  <div
+                    v-for="(src, i) in certificates"
+                    :key="src"
+                    class="embla__slide"
+                    :aria-label="`Слайд ${i + 1}`"
+                  >
+                    <img class="cert-thumb" :src="src" alt="Сертификат" @click="openModal(i)" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="embla__controls">
-              <button
-                class="embla__button"
-                type="button"
-                @click="scrollPrev"
-                aria-label="Предыдущий"
-              >
-                ‹
-              </button>
-              <button
-                class="embla__button"
-                type="button"
-                @click="scrollNext"
-                aria-label="Следующий"
-              >
-                ›
-              </button>
-            </div>
-          </div>
-
-          <div class="teacher__info-approach">
-            <div
-              v-for="item in approachItems"
-              :key="item.title"
-              class="teacher__info-approach-item"
-            >
-              <div class="header">
-                <img :src="`/icons/${item.icon}.svg`" alt="approach-icon" />
-                <span>{{ item.title }}</span>
+              <div class="embla__controls">
+                <button
+                  class="embla__button"
+                  type="button"
+                  @click="scrollPrev"
+                  aria-label="Предыдущий"
+                >
+                  ‹
+                </button>
+                <button
+                  class="embla__button"
+                  type="button"
+                  @click="scrollNext"
+                  aria-label="Следующий"
+                >
+                  ›
+                </button>
               </div>
-              <div class="description">
-                <span>{{ item.description }}</span>
-                <ul v-if="item.descriptionItems">
-                  <li v-for="(description, i) in item.descriptionItems" :key="i">
-                    {{ description }}
-                  </li>
-                </ul>
+            </div>
+
+            <div class="teacher__info-approach">
+              <div
+                v-for="item in approachItems"
+                :key="item.title"
+                class="teacher__info-approach-item"
+              >
+                <div class="header">
+                  <img :src="`/icons/${item.icon}.svg`" alt="approach-icon" />
+                  <span>{{ item.title }}</span>
+                </div>
+                <div class="description">
+                  <span>{{ item.description }}</span>
+                  <ul v-if="item.descriptionItems">
+                    <li v-for="(description, i) in item.descriptionItems" :key="i">
+                      {{ description }}
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <AppButton class="teacher__button" text="Запись на консультацию" type="orange-outline" />
+
+        <!-- Certificates Modal -->
+        <div
+          v-if="lightboxIndex !== null"
+          class="lightbox"
+          @click.self="closeModal"
+          role="dialog"
+          aria-modal="true"
+        >
+          <button class="lightbox__close" @click="closeModal" aria-label="Закрыть">✕</button>
+          <button
+            class="lightbox__nav lightbox__nav--prev"
+            @click.stop="prevLightbox"
+            aria-label="Предыдущий"
+          >
+            ‹
+          </button>
+          <img :src="certificates[lightboxIndex]" alt="Сертификат" class="lightbox__image" />
+          <button
+            class="lightbox__nav lightbox__nav--next"
+            @click.stop="nextLightbox"
+            aria-label="Следующий"
+          >
+            ›
+          </button>
+        </div>
       </div>
-    </div>
-
-    <AppButton class="main__teacher-button" text="Запись на консультацию" type="orange-outline" />
-
-    <!-- Certificates Modal -->
-    <div
-      v-if="lightboxIndex !== null"
-      class="lightbox"
-      @click.self="closeModal"
-      role="dialog"
-      aria-modal="true"
-    >
-      <button class="lightbox__close" @click="closeModal" aria-label="Закрыть">✕</button>
-      <button
-        class="lightbox__nav lightbox__nav--prev"
-        @click.stop="prevLightbox"
-        aria-label="Предыдущий"
-      >
-        ‹
-      </button>
-      <img :src="certificates[lightboxIndex]" alt="Сертификат" class="lightbox__image" />
-      <button
-        class="lightbox__nav lightbox__nav--next"
-        @click.stop="nextLightbox"
-        aria-label="Следующий"
-      >
-        ›
-      </button>
     </div>
   </div>
 </template>
@@ -185,115 +187,141 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-.main__teacher {
+.teacher {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  padding: 64px 20px;
 
-  @media (max-width: 900px) {
-    padding: 40px 20px;
-  }
-}
-.main__teacher-description {
-  color: var(--dark-gray);
-  font-size: 18px;
-}
-.main__teacher-wrapper {
-  display: flex;
-  align-items: flex-start;
-  color: var(--dark-gray);
-  gap: 80px;
-  margin-top: 44px;
+  &__bg {
+    padding: 80px 0;
+    background-color: var(--hint-of-green);
 
-  @media (max-width: 1200px) {
-    gap: 20px;
+    @media (max-width: 1200px) {
+      padding: 40px 0;
+    }
   }
 
-  @media (max-width: 900px) {
-    flex-direction: column;
-    align-items: center;
-  }
+  &__description {
+    text-align: center;
+    color: var(--dark-gray);
+    font-size: 18px;
 
-  .teacher {
-    &__info {
-      @media (max-width: 900px) {
-        max-width: 600px;
-      }
-    }
-
-    &__info-name {
-      color: var(--dark-gray);
-      font-size: 26px;
-      font-weight: 800;
-
-      @media (max-width: 660px) {
-        font-size: 22px;
-      }
-    }
-
-    &__photo {
-      width: 300px;
-
-      @media (max-width: 1200px) {
-        width: 200px;
-      }
-
-      @media (max-width: 900px) {
-        width: 240px;
-      }
-    }
-
-    &__info-description {
-      margin-top: 28px;
-      color: var(--dark-gray);
+    @media (max-width: 900px) {
       font-size: 16px;
     }
+  }
 
-    &__info-certificates {
+  &__wrapper {
+    display: flex;
+    align-items: flex-start;
+    color: var(--dark-gray);
+    gap: 80px;
+    margin-top: 74px;
+
+    @media (max-width: 1200px) {
+      gap: 20px;
+      margin-top: 44px;
+    }
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__info {
+    @media (max-width: 900px) {
+      max-width: 600px;
+    }
+  }
+
+  &__info-name {
+    color: var(--dark-gray);
+    font-size: 26px;
+    font-weight: 800;
+
+    @media (max-width: 660px) {
+      font-size: 22px;
+    }
+  }
+
+  &__photo {
+    width: 300px;
+
+    @media (max-width: 1200px) {
+      width: 200px;
+    }
+
+    @media (max-width: 900px) {
+      width: 240px;
+    }
+  }
+
+  &__info-description {
+    margin-top: 28px;
+    color: var(--dark-gray);
+    font-size: 16px;
+  }
+
+  &__info-certificates {
+    display: block;
+    margin-top: 36px;
+
+    @media (max-width: 900px) {
       display: block;
-      margin-top: 36px;
+    }
+  }
+
+  &__info-approach {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__info-approach-item {
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      img {
+        width: 28px;
+      }
+
+      span {
+        color: var(--dark-gray);
+        font-size: 18px;
+        font-weight: 800;
+      }
 
       @media (max-width: 900px) {
-        display: block;
-      }
-    }
-
-    &__info-approach {
-      margin-top: 36px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    &__info-approach-item {
-      .header {
-        display: flex;
-        align-items: center;
-        gap: 20px;
+        gap: 12px;
 
         img {
-          width: 28px;
+          width: 22px;
         }
 
         span {
-          color: var(--dark-gray);
-          font-size: 18px;
-          font-weight: 800;
+          font-size: 16px;
         }
       }
-      .description {
-        margin-top: 10px;
-        font-size: 16px;
-        color: var(--dark-gray);
-      }
+    }
+    .description {
+      margin-top: 10px;
+      font-size: 16px;
+      color: var(--dark-gray);
     }
   }
-}
 
-.main__teacher-button {
-  margin-top: 56px;
+  &__button {
+    margin-top: 56px;
+
+    @media (max-width: 900px) {
+      margin-top: 26px;
+    }
+  }
 }
 
 /* Embla slider */
@@ -356,6 +384,12 @@ onBeforeUnmount(() => {
   font-size: 22px;
   line-height: 1;
   padding: 0;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    color: var(--la-palma-light);
+    border: 1px solid var(--la-palma-light);
+  }
 }
 
 /* Lightbox modal */

@@ -61,7 +61,7 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
     font-weight: bold;
 
     @media (max-width: 660px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
@@ -119,6 +119,10 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
       padding: 0;
       border: none;
     }
+  }
+
+  @media (max-width: 900px) {
+    max-width: 360px;
   }
 }
 </style>

@@ -40,7 +40,7 @@ defineProps({
     color: var(--ecstasy);
 
     @media (max-width: 660px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 

@@ -5,27 +5,38 @@
         <div class="app-footer__contacts-title">Контакты</div>
         <div class="app-footer__contacts-links">
           <a href="tel:+375259964261" class="app-footer__contact">+375 25 966-42-61</a>
-          <a href="https://instagram.com/i.kovalenko_beclever" target="_blank" class="app-footer__contact">i.kovalenko_beclever</a>
-          <a href="https://beclever.by/" target="_blank" class="app-footer__contact">www.beclever.by</a>
+          <a
+            href="https://instagram.com/i.kovalenko_beclever"
+            target="_blank"
+            class="app-footer__contact"
+            >i.kovalenko_beclever</a
+          >
+          <a href="https://beclever.by/" target="_blank" class="app-footer__contact"
+            >www.beclever.by</a
+          >
         </div>
       </div>
       <div class="app-footer__info">
         <a href="" class="app-footer__info-link">
           Положение о политике в отношении обработки персональных данных
         </a>
-        <a href="" class="app-footer__info-link">
+        <RouterLink to="/public-offer" class="app-footer__info-link">
           Публичный договор возмездного оказания консультационно-информационных услуг
-        </a>
+        </RouterLink>
       </div>
     </div>
+
+    <div class="app-footer__copyright">© {{ currentYear }} Be Clever. Все права защищены.</div>
   </footer>
 </template>
 
 <script setup>
+const currentYear = new Date().getFullYear()
 </script>
 
 <style lang="scss" scoped>
 .app-footer {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -90,13 +101,30 @@
   }
 
   &__info-link {
-    width: 300px;
+    width: 380px;
     display: block;
-    text-decoration: underline;
+
+    &:hover {
+      color: var(--hint-of-green-bright);
+    }
 
     @media (max-width: 660px) {
       width: 100%;
     }
+  }
+
+  @media (max-width: 660px) {
+    align-items: flex-start;
+  }
+
+  &__copyright {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--gray-nurse);
+    font-size: 14px;
   }
 
   @media (max-width: 660px) {

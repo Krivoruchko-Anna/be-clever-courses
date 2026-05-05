@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainPage from '@/views/MainPage.vue'
+import PublicOfferPage from '@/views/PublicOfferPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,9 +8,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'MainPage',
-      component: MainPage
-    }
+      component: MainPage,
+    },
+    {
+      path: '/public-offer',
+      name: 'PublicOfferPage',
+      component: PublicOfferPage,
+    },
   ],
+  scrollBehavior() {
+    return { top: 0 }
+  },
 })
 
 export default router

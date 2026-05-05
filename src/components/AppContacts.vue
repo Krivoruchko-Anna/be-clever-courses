@@ -70,7 +70,7 @@
     }
 
     @media (max-width: 660px) {
-      font-size: 28px;
+      font-size: 24px;
       margin: 0;
     }
   }

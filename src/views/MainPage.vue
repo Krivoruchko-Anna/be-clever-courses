@@ -3,7 +3,10 @@
     <AppHeader />
     <main class="main">
       <section class="main__promo">
-        <img src="/images/main.png" alt="group-photo" class="main__promo-img" />
+        <picture>
+          <source srcset="/images/main__mobile.png" media="(max-width: 660px)" />
+          <img src="/images/main.png" alt="group-photo" class="main__promo-img" />
+        </picture>
         <div class="container">
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
@@ -34,14 +37,16 @@
         </div>
       </section>
 
-      <section class="main__teacher-bg">
+      <section class="main__teacher">
         <MainTeacher />
       </section>
 
-      <section class="main__products">
-        <h2 class="main-title">Готовые решения для педагогов</h2>
-        <div class="products__list">
-          <ProductCard v-for="(product, index) in productCards" :key="index" :product="product" />
+      <section class="container">
+        <div class="main__products">
+          <h2 class="main-title">Готовые решения для педагогов</h2>
+          <div class="products__list">
+            <ProductCard v-for="(product, index) in productCards" :key="index" :product="product" />
+          </div>
         </div>
       </section>
 
@@ -190,6 +195,8 @@ const activeFormType = ref('lesson')
 
 <style lang="scss" scoped>
 .main {
+  padding-top: 64px;
+
   &__promo-wrapper {
     padding: 32px 80px 80px 100px;
   }
@@ -277,10 +284,7 @@ const activeFormType = ref('lesson')
     align-items: center;
 
     @media (max-width: 660px) {
-      width: fit-content;
-    }
-
-    @media (max-width: 400px) {
+      align-items: flex-start;
       max-width: 118px;
       min-width: 90px;
     }
@@ -308,12 +312,7 @@ const activeFormType = ref('lesson')
     }
   }
 
-  &__teacher-bg {
-    background-color: var(--hint-of-green);
-  }
-
   &__products {
-    max-width: 954px;
     margin: 60px auto 0 auto;
     display: flex;
     flex-direction: column;
@@ -325,14 +324,16 @@ const activeFormType = ref('lesson')
   }
 
   .products__list {
-    margin-top: 32px;
+    width: 100%;
+    margin: 32px auto 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 34px;
 
     @media (max-width: 1200px) {
       justify-content: center;
+      margin-top: 6px;
     }
   }
 
@@ -354,7 +355,7 @@ const activeFormType = ref('lesson')
     justify-content: center;
 
     @media (max-width: 1200px) {
-      gap: 40px;
+      gap: 20px;
       margin-top: 40px;
     }
   }
@@ -378,6 +379,7 @@ const activeFormType = ref('lesson')
     @media (max-width: 1200px) {
       flex-direction: column;
       margin-top: 20px;
+      gap: 20px;
     }
   }
 

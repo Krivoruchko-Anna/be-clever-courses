@@ -74,7 +74,7 @@ const hintText = computed(() => {
 
 <style lang="scss">
 .app-form {
-  border-radius: 24px;
+  border-radius: 16px;
   background-color: var(--white);
   box-shadow: 0 4px 3px #0000000a, 0 4px 14px #0000000a;
 
@@ -97,17 +97,17 @@ const hintText = computed(() => {
     cursor: pointer;
 
     &:first-child {
-      border-radius: 24px 0 0 0;
+      border-radius: 16px 0 0 0;
     }
 
     &:last-child {
-      border-radius: 0 24px 0 0;
+      border-radius: 0 16px 0 0;
     }
 
     &.--active {
       color: var(--killarney);
       background-color: var(--hint-of-green-bright);
-      box-shadow: 2px 2px 2px rgba(142, 142, 142, 0.15);
+      box-shadow: 2px 2px 2px rgba(142, 142, 142, 0.25);
     }
 
     @media (max-width: 1200px) {
@@ -115,7 +115,7 @@ const hintText = computed(() => {
     }
 
     @media (max-width: 660px) {
-      font-size: 16px;
+      font-size: 14px;
       padding: 16px 12px;
       text-align: center;
     }
@@ -213,7 +213,6 @@ const hintText = computed(() => {
   .app-button {
     width: 250px;
     height: 52px;
-    font-size: 16px;
   }
 }
 </style>
