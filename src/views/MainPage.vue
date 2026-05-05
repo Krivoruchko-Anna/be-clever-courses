@@ -3,17 +3,17 @@
     <AppHeader />
     <main class="main">
       <section class="main__promo">
-        <img src="/photo/main.png" alt="group-photo" class="main__promo-img">
+        <img src="/photo/main.png" alt="group-photo" class="main__promo-img" />
         <div class="container">
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
-            <br>
+            <br />
             <span>по системе смарт-клуба «Be Clever»</span>
           </h1>
 
           <div class="main__promo-description">
-            Преподавать легко с проверенной методикой и занятиями,
-            адаптированными для самых маленьких исследователей
+            Преподавать легко с проверенной методикой и занятиями, адаптированными для самых
+            маленьких исследователей
           </div>
 
           <div class="main__promo-digits">
@@ -24,17 +24,11 @@
           </div>
 
           <div class="main__promo-buttons">
-            <a
-                href="#app-form"
-                @click="activeFormType = 'lesson'"
-            >
+            <a href="#app-form" @click="activeFormType = 'lesson'">
               <AppButton text="Получить пробный урок" />
             </a>
-            <a
-                href="#app-form"
-               @click="activeFormType = 'course'"
-            >
-              <AppButton text="Приобрести годовой курс для детей 3-5 лет" type="orange"  />
+            <a href="#app-form" @click="activeFormType = 'course'">
+              <AppButton text="Приобрести годовой курс для детей 3-5 лет" type="orange" />
             </a>
           </div>
         </div>
@@ -43,7 +37,9 @@
       <section class="main__teacher-bg">
         <div class="main__teacher">
           <h2 class="main-title">Эксперт в Английском для детей</h2>
-          <div class="main__teacher-description">Открываем мир английского с увлечением и радостью</div>
+          <div class="main__teacher-description">
+            Открываем мир английского с увлечением и радостью
+          </div>
 
           <div class="container">
             <div class="main__teacher-wrapper">
@@ -51,9 +47,14 @@
               <div class="teacher__info">
                 <div class="teacher__info-name">Ирина Коваленко</div>
                 <div class="teacher__info-description">
-                  Основатель и руководитель смарт-клуба BeClever (г. Гомель, Беларусь),  педагог VYL&YL, автор программы обучения малышей английскому языку.
+                  Основатель и руководитель смарт-клуба BeClever (г. Гомель, Беларусь), педагог
+                  VYL&YL, автор программы обучения малышей английскому языку.
                 </div>
-                <div class="teacher__info-certificates"></div>
+                <div class="teacher__info-certificates">
+                  <div class="teacher__certificate"></div>
+                  <div class="teacher__certificate"></div>
+                  <div class="teacher__certificate"></div>
+                </div>
                 <div class="teacher__info-approach">
                   <div
                     v-for="item in approachItems"
@@ -61,16 +62,15 @@
                     class="teacher__info-approach-item"
                   >
                     <div class="header">
-                      <img :src="`/icons/${item.icon}.svg`" alt="approach-icon">
+                      <img :src="`/icons/${item.icon}.svg`" alt="approach-icon" />
                       <span>{{ item.title }}</span>
                     </div>
                     <div class="description">
                       <span>{{ item.description }}</span>
                       <ul v-if="item.descriptionItems">
-                        <li
-                          v-for="(description, i) in item.descriptionItems"
-                          :key="i"
-                        >{{ description }}</li>
+                        <li v-for="(description, i) in item.descriptionItems" :key="i">
+                          {{ description }}
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -90,13 +90,8 @@
       <section class="main__products">
         <h2 class="main-title">Готовые решения для педагогов</h2>
         <div class="products__list">
-          <ProductCard
-            v-for="(product, index) in productCards"
-            :key="index"
-            :product="product"
-          />
+          <ProductCard v-for="(product, index) in productCards" :key="index" :product="product" />
         </div>
-
       </section>
 
       <section class="main__advantages">
@@ -157,7 +152,7 @@ const digits = [
   { title: 'Учеников', value: '500+' },
   { title: 'Лет смарт-клубу', value: '5+' },
   { title: 'Довольных родителей', value: '99%' },
-];
+]
 
 const approachItems = [
   {
@@ -173,15 +168,17 @@ const approachItems = [
   },
   {
     title: 'Философия',
-    description: '"Английский – не просто урок, а радостная среда для раскрытия потенциала ребенка".',
+    description:
+      '"Английский – не просто урок, а радостная среда для раскрытия потенциала ребенка".',
     icon: 'philosophy',
   },
   {
     title: 'Методика нового поколения',
-    description: 'Идеально для педагогов, которые хотят учить без стресса, развивая в детях креативность и любовь к языку!',
+    description:
+      'Идеально для педагогов, которые хотят учить без стресса, развивая в детях креативность и любовь к языку!',
     icon: 'methodology',
   },
-];
+]
 
 const productCards = ref([
   {
@@ -201,14 +198,16 @@ const productCards = ref([
   {
     title: 'Личная консультация',
     icon: 'product_video',
-    description: 'Индивидуальная поддержка и разбор ваших вопросов по обучению детей английскому языку с учётом их возраста и особенностей.',
+    description:
+      'Индивидуальная поддержка и разбор ваших вопросов по обучению детей английскому языку с учётом их возраста и особенностей.',
     image: 'product_3.png',
     link: '',
   },
   {
     title: 'Пакет образовательных документов для детского центра РБ',
     icon: 'product_folders',
-    description: 'Получите пакет всех необходимых образовательных документов для вашего детского центра РБ',
+    description:
+      'Получите пакет всех необходимых образовательных документов для вашего детского центра РБ',
     image: 'product_4.png',
     link: '',
   },
@@ -219,15 +218,14 @@ const advantagesList = ref([
     id: '1',
     title: 'Преподавать английский детям - легко',
     paragraphs: ['Готовые уроки', 'Экономия времени', 'Быстрый результат'],
-    bullets: true
+    bullets: true,
   },
   {
     id: '2',
     title: 'Проверенная методика',
     paragraphs: [
-      'Проверенная успешная методика, \n' +
-      'которая экономит ваше время, силы и нервы.',
-      'Все уже продумано и структурировано. Вам останется только учить.'
+      'Проверенная успешная методика, \n' + 'которая экономит ваше время, силы и нервы.',
+      'Все уже продумано и структурировано. Вам останется только учить.',
     ],
   },
   {
@@ -239,28 +237,29 @@ const advantagesList = ref([
     id: '4',
     title: 'Для всех уровней',
     text: 'Для репетиторов и педагогов, даже если у вас нет опыта работы с малышами.',
-  }
-]);
+  },
+])
 
 const questionsList = ref([
   {
     id: '1',
     question: 'Как быстро я получу материалы?',
-    answer: 'Мгновенно! Ссылка на скачивание придет сразу после оплаты.'
+    answer: 'Мгновенно! Ссылка на скачивание придет сразу после оплаты.',
   },
   {
     id: '2',
     question: 'Какая длительность курса?',
-    answer: 'Курс рассчитан на весь учебный год - 9 месяцев и состоит из 72 уроков (в каждом подробный план-конспект, аудио, видео, необходимые печатные материалы).'
+    answer:
+      'Курс рассчитан на весь учебный год - 9 месяцев и состоит из 72 уроков (в каждом подробный план-конспект, аудио, видео, необходимые печатные материалы).',
   },
   {
     id: '3',
     question: 'Подойдет ли курс для начинающих педагогов?',
-    answer: 'Да. Все уроки простые и понятные, содержат все необходимые материалы для занятий.'
+    answer: 'Да. Все уроки простые и понятные, содержат все необходимые материалы для занятий.',
   },
-]);
+])
 
-const activeFormType = ref('lesson');
+const activeFormType = ref('lesson')
 </script>
 
 <style lang="scss" scoped>
@@ -293,7 +292,7 @@ const activeFormType = ref('lesson');
 
   &__promo-description {
     width: 580px;
-    color: var(--dove-gray);
+    color: var(--dark-gray);
     font-size: 16px;
     line-height: 22px;
 
@@ -327,7 +326,7 @@ const activeFormType = ref('lesson');
     }
 
     .digit-title {
-      color: var(--dove-gray);
+      color: var(--dark-gray);
       font-size: 16px;
 
       @media (max-width: 400px) {
@@ -376,7 +375,8 @@ const activeFormType = ref('lesson');
       align-items: center;
       gap: 20px;
 
-      a, .app-button {
+      a,
+      .app-button {
         width: 100%;
       }
     }
@@ -399,14 +399,14 @@ const activeFormType = ref('lesson');
   }
 
   &__teacher-description {
-    color: var(--dove-gray);
+    color: var(--dark-gray);
     font-size: 18px;
   }
 
   &__teacher-wrapper {
     display: flex;
     align-items: flex-start;
-    color: var(--cod-gray);
+    color: var(--dark-gray);
     gap: 80px;
     margin-top: 44px;
 
@@ -427,7 +427,7 @@ const activeFormType = ref('lesson');
       }
 
       &__info-name {
-        color: var(--cod-gray);
+        color: var(--dark-gray);
         font-size: 26px;
         font-weight: 800;
 
@@ -450,12 +450,26 @@ const activeFormType = ref('lesson');
 
       &__info-description {
         margin-top: 28px;
-        color: var(--cod-gray);
+        color: var(--dark-gray);
         font-size: 16px;
       }
 
       &__info-certificates {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 20px;
         margin-top: 36px;
+
+        @media (max-width: 900px) {
+          justify-content: center;
+        }
+      }
+
+      &__certificate {
+        border: 1px solid var(--japanese-laurel);
+        width: 140px;
+        height: 160px;
       }
 
       &__info-approach {
@@ -476,7 +490,7 @@ const activeFormType = ref('lesson');
           }
 
           span {
-            color: var(--cod-gray);
+            color: var(--dark-gray);
             font-size: 18px;
             font-weight: 800;
           }
@@ -484,7 +498,7 @@ const activeFormType = ref('lesson');
         .description {
           margin-top: 10px;
           font-size: 16px;
-          color: var(--dove-gray);
+          color: var(--dark-gray);
         }
       }
     }

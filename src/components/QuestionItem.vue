@@ -25,7 +25,7 @@ defineProps({
   &__header {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
+    gap: 12px;
   }
 
   &__icon {
@@ -46,7 +46,7 @@ defineProps({
 
   &__answer {
     margin-top: 16px;
-    margin-left: 50px;
+    margin-left: 42px;
     line-height: 24px;
     font-size: 16px;
     color: var(--tundora);

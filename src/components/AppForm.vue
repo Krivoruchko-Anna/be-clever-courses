@@ -76,7 +76,7 @@ const hintText = computed(() => {
 .app-form {
   border-radius: 24px;
   background-color: var(--white);
-  box-shadow: 0 4px 9px #0000000a, 0 14px 14px #0000000a;
+  box-shadow: 0 4px 3px #0000000a, 0 4px 14px #0000000a;
 
   &__tabs {
     display: flex;
@@ -92,7 +92,7 @@ const hintText = computed(() => {
     width: 100%;
     color: var(--gray);
     background-color: var(--gray-nurse);
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     cursor: pointer;
 
@@ -107,11 +107,11 @@ const hintText = computed(() => {
     &.--active {
       color: var(--killarney);
       background-color: var(--hint-of-green-bright);
-      box-shadow: 2px 2px 2px #00000026;
+      box-shadow: 2px 2px 2px rgba(142, 142, 142, 0.15);
     }
 
     @media (max-width: 1200px) {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     @media (max-width: 660px) {

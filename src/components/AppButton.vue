@@ -1,9 +1,12 @@
 <template>
-  <button class="app-button" :class="{
-   '--green': type === 'green',
-   '--orange': type === 'orange',
-   '--orange-outline': type === 'orange-outline'
-  }">
+  <button
+    class="app-button"
+    :class="{
+      '--green': type === 'green',
+      '--orange': type === 'orange',
+      '--orange-outline': type === 'orange-outline',
+    }"
+  >
     <span>{{ text }}</span>
   </button>
 </template>
@@ -25,16 +28,17 @@ defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 56px;
   max-width: 304px;
-  padding: 0 36px;
+  padding: 8px 30px;
   border-radius: 50px;
   border: none;
   color: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  font-family: 'Mulish', sans-serif;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
 
   &.--green {
     background-color: var(--japanese-laurel);
@@ -45,15 +49,15 @@ defineProps({
   }
 
   &.--orange-outline {
-    height: 62px;
+    padding: 12px 30px;
     background-color: transparent;
     border: 2px solid var(--ecstasy);
     color: var(--ecstasy);
     font-size: 18px;
 
     @media (max-width: 1200px) {
-      height: 52px;
-      font-size: 16px;
+      padding: 8px 24px;
+      font-size: 14px;
     }
   }
 
@@ -63,7 +67,8 @@ defineProps({
   }
 
   @media (max-width: 1200px) {
-    padding: 0 22px;
+    padding: 12px 24px;
+    max-width: 100%;
   }
 
   @media (max-width: 900px) {

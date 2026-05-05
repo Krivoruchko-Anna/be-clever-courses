@@ -1,20 +1,20 @@
 <template>
   <div class="product-card">
-    <img :src="`/photo/products/${product.image}`"
-         :alt="product.title" class="product-card__image" />
+    <img
+      :src="`/photo/products/${product.image}`"
+      :alt="product.title"
+      class="product-card__image"
+    />
     <div class="product-card__content">
       <div class="product-card__info">
         <div class="product-card__header">
-          <img class="product-card__icon"
-               :src="`/icons/${product.icon}.svg`"
-               alt="approach-icon"
-          >
+          <img class="product-card__icon" :src="`/icons/${product.icon}.svg`" alt="approach-icon" />
           <h3 class="product-card__title">{{ product.title }}</h3>
         </div>
         <p class="product-card__description">{{ product.description }}</p>
       </div>
 
-      <AppButton class="product-card__button" text="Подробнее" type="orange-outline"/>
+      <AppButton class="product-card__button" text="Подробнее" type="orange-outline" />
     </div>
   </div>
 </template>
@@ -25,8 +25,8 @@ import AppButton from '@/components/AppButton.vue'
 defineProps({
   product: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 
@@ -39,12 +39,12 @@ defineProps({
   border-radius: 24px;
   transition: all 0.3s;
   cursor: pointer;
-  box-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
-  0 5px 15px #0000001a;
+  box-shadow: 0 4px 9px #0000001a;
 
   &:hover {
-    box-shadow: 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent, 0 0 0 transparent,
-    0 10px 15px #0000001a, 0 4px 6px #0000001a;
+    box-shadow:
+      0 4px 9px #0000001a,
+      0 1px 3px #0000001a;
   }
 
   &__header {
@@ -88,8 +88,9 @@ defineProps({
   }
 
   .app-button.--orange-outline {
-    width: 160px;
-    height: 48px;
+    padding: 8px 20px;
+    font-size: 14px;
+    border-width: 1px;
   }
 
   @media (max-width: 1200px) {

@@ -1,7 +1,7 @@
 <template>
   <div
     class="advantage-item"
-    :class="{'--top': isTop, '--left': isLeft, '--right': isRight, '--bottom': isBottom}"
+    :class="{ '--top': isTop, '--left': isLeft, '--right': isRight, '--bottom': isBottom }"
   >
     <div class="advantage-item__header">
       <img class="advantage-item__icon" src="/icons/done.svg" alt="" />
@@ -11,11 +11,7 @@
     <div class="advantage-item__body">
       <div class="advantage-item__text" v-if="advantage.text">{{ advantage.text }}</div>
       <div v-else class="advantage-item__paragraphs">
-        <div
-          v-for="(p, i) in advantage.paragraphs"
-          :key="i"
-          class="advantage-item__paragraph"
-        >
+        <div v-for="(p, i) in advantage.paragraphs" :key="i" class="advantage-item__paragraph">
           <img v-if="advantage.bullets" src="/icons/target.svg" alt="" />
           {{ p }}
         </div>
@@ -30,8 +26,8 @@ import { computed } from 'vue'
 const props = defineProps({
   advantage: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 
 const isTop = computed(() => props.advantage.id === '1' || props.advantage.id === '2')
@@ -42,12 +38,12 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
 
 <style lang="scss" scoped>
 .advantage-item {
-  max-width: 446px;
+  max-width: 440px;
 
   &__header {
     display: flex;
     align-items: flex-start;
-    gap: 20px;
+    gap: 12px;
   }
 
   &__icon {
@@ -55,7 +51,7 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
     height: auto;
 
     @media (max-width: 900px) {
-      width: 24px
+      width: 24px;
     }
   }
 
@@ -71,7 +67,7 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
 
   &__body {
     margin-top: 14px;
-    margin-left: 50px;
+    margin-left: 42px;
     line-height: 24px;
     font-size: 16px;
     color: var(--tundora);
@@ -82,10 +78,10 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
   }
 
   &__paragraph {
-    margin-top: 14px;
+    margin-top: 10px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 
     img {
       width: 16px;
@@ -97,30 +93,31 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
   }
 
   &.--top {
-    padding-bottom: 50px;
+    padding-bottom: 42px;
     border-bottom: 1px dashed var(--la-palma);
   }
 
   &.--left {
-    padding-right: 50px;
+    padding-right: 42px;
     border-right: 1px dashed var(--la-palma);
   }
 
   &.--right {
-    padding-left: 50px;
+    padding-left: 42px;
   }
 
   &.--bottom {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding-top: 42px;
+    padding-bottom: 42px;
   }
 
   @media (max-width: 1200px) {
-
-    &.--top, &.--left, &.--right, &.--bottom{
+    &.--top,
+    &.--left,
+    &.--right,
+    &.--bottom {
       padding: 0;
       border: none;
-
     }
   }
 }

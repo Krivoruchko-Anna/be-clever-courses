@@ -45,7 +45,6 @@ function toggleMenu() {
   align-items: center;
   padding: 0 20px;
   backdrop-filter: blur(4px) brightness(100%);
-  border-bottom: 1px solid rgba(45, 90, 45, 0.25);
   background-color: transparent;
   z-index: 10;
 
