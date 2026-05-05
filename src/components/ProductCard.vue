@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
     <img
-      :src="`/photo/products/${product.image}`"
+      :src="`/images/products/${product.image}`"
       :alt="product.title"
       class="product-card__image"
     />

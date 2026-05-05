@@ -3,7 +3,7 @@
     <AppHeader />
     <main class="main">
       <section class="main__promo">
-        <img src="/photo/main.png" alt="group-photo" class="main__promo-img" />
+        <img src="/images/main.png" alt="group-photo" class="main__promo-img" />
         <div class="container">
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
@@ -35,56 +35,7 @@
       </section>
 
       <section class="main__teacher-bg">
-        <div class="main__teacher">
-          <h2 class="main-title">Эксперт в Английском для детей</h2>
-          <div class="main__teacher-description">
-            Открываем мир английского с увлечением и радостью
-          </div>
-
-          <div class="container">
-            <div class="main__teacher-wrapper">
-              <img src="/photo/teacher__photo.png" alt="Ирина Коваленко" class="teacher__photo">
-              <div class="teacher__info">
-                <div class="teacher__info-name">Ирина Коваленко</div>
-                <div class="teacher__info-description">
-                  Основатель и руководитель смарт-клуба BeClever (г. Гомель, Беларусь), педагог
-                  VYL&YL, автор программы обучения малышей английскому языку.
-                </div>
-                <div class="teacher__info-certificates">
-                  <div class="teacher__certificate"></div>
-                  <div class="teacher__certificate"></div>
-                  <div class="teacher__certificate"></div>
-                </div>
-                <div class="teacher__info-approach">
-                  <div
-                    v-for="item in approachItems"
-                    :key="item.title"
-                    class="teacher__info-approach-item"
-                  >
-                    <div class="header">
-                      <img :src="`/icons/${item.icon}.svg`" alt="approach-icon" />
-                      <span>{{ item.title }}</span>
-                    </div>
-                    <div class="description">
-                      <span>{{ item.description }}</span>
-                      <ul v-if="item.descriptionItems">
-                        <li v-for="(description, i) in item.descriptionItems" :key="i">
-                          {{ description }}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <AppButton
-            class="main__teacher-button"
-            text="Запись на консультацию"
-            type="orange-outline"
-          />
-        </div>
+        <MainTeacher />
       </section>
 
       <section class="main__products">
@@ -142,6 +93,7 @@ import { ref } from 'vue'
 import AppHeader from '../components/AppHeader.vue'
 import AppButton from '../components/AppButton.vue'
 import ProductCard from '@/components/ProductCard.vue'
+import MainTeacher from '@/components/MainTeacher.vue'
 import AdvantageItem from '@/components/AdvantageItem.vue'
 import QuestionItem from '@/components/QuestionItem.vue'
 import AppForm from '@/components/AppForm.vue'
@@ -152,32 +104,6 @@ const digits = [
   { title: 'Учеников', value: '500+' },
   { title: 'Лет смарт-клубу', value: '5+' },
   { title: 'Довольных родителей', value: '99%' },
-]
-
-const approachItems = [
-  {
-    title: 'Подход к обучению',
-    description: 'Разработала комплексную систему обучения, объединяющую',
-    descriptionItems: [
-      'игровые форматы для снижения стресса у детей,',
-      'мультисенсорный подход,',
-      'CLIL,',
-      'развитие эмоционального интеллекта и креативности.',
-    ],
-    icon: 'approach',
-  },
-  {
-    title: 'Философия',
-    description:
-      '"Английский – не просто урок, а радостная среда для раскрытия потенциала ребенка".',
-    icon: 'philosophy',
-  },
-  {
-    title: 'Методика нового поколения',
-    description:
-      'Идеально для педагогов, которые хотят учить без стресса, развивая в детях креативность и любовь к языку!',
-    icon: 'methodology',
-  },
 ]
 
 const productCards = ref([
@@ -384,128 +310,6 @@ const activeFormType = ref('lesson')
 
   &__teacher-bg {
     background-color: var(--hint-of-green);
-  }
-
-  &__teacher {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 auto;
-    padding: 64px 20px;
-
-    @media (max-width: 900px) {
-      padding: 40px 20px;
-    }
-  }
-
-  &__teacher-description {
-    color: var(--dark-gray);
-    font-size: 18px;
-  }
-
-  &__teacher-wrapper {
-    display: flex;
-    align-items: flex-start;
-    color: var(--dark-gray);
-    gap: 80px;
-    margin-top: 44px;
-
-    @media (max-width: 1200px) {
-      gap: 20px;
-    }
-
-    @media (max-width: 900px) {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .teacher {
-      &__info {
-        @media (max-width: 900px) {
-          max-width: 600px;
-        }
-      }
-
-      &__info-name {
-        color: var(--dark-gray);
-        font-size: 26px;
-        font-weight: 800;
-
-        @media (max-width: 660px) {
-          font-size: 22px;
-        }
-      }
-
-      &__photo {
-        width: 300px;
-
-        @media (max-width: 1200px) {
-          width: 200px;
-        }
-
-        @media (max-width: 900px) {
-          width: 240px;
-        }
-      }
-
-      &__info-description {
-        margin-top: 28px;
-        color: var(--dark-gray);
-        font-size: 16px;
-      }
-
-      &__info-certificates {
-        display: flex;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 36px;
-
-        @media (max-width: 900px) {
-          justify-content: center;
-        }
-      }
-
-      &__certificate {
-        border: 1px solid var(--japanese-laurel);
-        width: 140px;
-        height: 160px;
-      }
-
-      &__info-approach {
-        margin-top: 36px;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-
-      &__info-approach-item {
-        .header {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-
-          img {
-            width: 28px;
-          }
-
-          span {
-            color: var(--dark-gray);
-            font-size: 18px;
-            font-weight: 800;
-          }
-        }
-        .description {
-          margin-top: 10px;
-          font-size: 16px;
-          color: var(--dark-gray);
-        }
-      }
-    }
-  }
-
-  &__teacher-button {
-    margin-top: 56px;
   }
 
   &__products {
