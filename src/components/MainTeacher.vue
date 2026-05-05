@@ -6,7 +6,7 @@
         <div class="teacher__description">Открываем мир английского с увлечением и радостью</div>
 
         <div class="teacher__wrapper">
-          <img src="/images/teacher.png" alt="Ирина Коваленко" class="teacher__photo" />
+          <img src="/images/teacher.webp" alt="Ирина Коваленко" class="teacher__photo" />
           <div class="teacher__info">
             <div class="teacher__info-name">Ирина Коваленко</div>
             <div class="teacher__info-description">

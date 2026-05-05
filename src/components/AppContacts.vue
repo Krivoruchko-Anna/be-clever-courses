@@ -18,23 +18,23 @@
           <a href="tel:+375259964261" class="text">+375 25 966-42-61</a>
         </div>
       </div>
-      <img src="/images/clover.png" class="app-contacts__clover" alt="clover" />
+      <img src="/images/clover.webp" class="app-contacts__clover" alt="clover" />
     </div>
     <div class="app-contacts__photos">
       <div class="app-contacts__photos-top">
         <img
-          src="/images/contacts/contacts_1.jpg"
+          src="/images/contacts/contacts_1.webp"
           alt="group-photo"
           class="app-contacts__photo-top"
         />
         <img
-          src="/images/contacts/contacts_2.jpg"
+          src="/images/contacts/contacts_2.webp"
           alt="group-photo"
           class="app-contacts__photo-top"
         />
       </div>
       <img
-        src="/images/contacts/contacts_3.jpg"
+        src="/images/contacts/contacts_3.webp"
         alt="group-photo"
         class="app-contacts__photo-bottom"
       />

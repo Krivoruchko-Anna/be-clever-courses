@@ -4,8 +4,8 @@
     <main class="main">
       <section class="main__promo">
         <picture>
-          <source srcset="/images/main__mobile.png" media="(max-width: 660px)" />
-          <img src="/images/main.png" alt="group-photo" class="main__promo-img" />
+          <source srcset="/images/main__mobile.webp" media="(max-width: 660px)" />
+          <img src="/images/main.webp" alt="group-photo" class="main__promo-img" />
         </picture>
         <div class="container">
           <h1 class="main__promo-title">
@@ -116,14 +116,14 @@ const productCards = ref([
     title: 'Авторские курсы для детей 3-5 лет',
     icon: 'product_learn',
     description: 'Выстройте свою эффективную работу с готовым годовым курсом Be Clever',
-    image: 'product_1.png',
+    image: 'product_1.webp',
     link: '',
   },
   {
     title: 'Авторские учебные материалы',
     icon: 'product_book',
     description: 'Ресурсы, которые сделают изучение английского языка увлекательным и эффективным',
-    image: 'product_2.png',
+    image: 'product_2.webp',
     link: '',
   },
   {
@@ -131,7 +131,7 @@ const productCards = ref([
     icon: 'product_video',
     description:
       'Индивидуальная поддержка и разбор ваших вопросов по обучению детей английскому языку с учётом их возраста и особенностей.',
-    image: 'product_3.png',
+    image: 'product_3.webp',
     link: '',
   },
   {
@@ -139,7 +139,7 @@ const productCards = ref([
     icon: 'product_folders',
     description:
       'Получите пакет всех необходимых образовательных документов для вашего детского центра РБ',
-    image: 'product_4.png',
+    image: 'product_4.webp',
     link: '',
   },
 ])
