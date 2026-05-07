@@ -43,7 +43,7 @@ const currentYear = new Date().getFullYear()
   background-color: var(--tundora);
   color: var(--white);
   height: 300px;
-  padding: 40px 24px;
+  padding: 50px 24px;
 
   &__wrapper {
     display: flex;
@@ -123,12 +123,17 @@ const currentYear = new Date().getFullYear()
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    color: var(--gray-nurse);
+    color: var(--gray);
     font-size: 14px;
   }
 
   @media (max-width: 660px) {
     align-items: flex-start;
+
+    &__copyright {
+      bottom: 12px;
+      font-size: 12px;
+    }
   }
 }
 </style>

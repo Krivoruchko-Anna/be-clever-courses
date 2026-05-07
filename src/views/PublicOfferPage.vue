@@ -442,13 +442,14 @@
 
   &__document {
     box-sizing: border-box;
-    width: 1100px;
+    width: min(1100px, calc(100% - 32px));
     margin: 0 auto;
     padding: 60px;
     background-color: var(--white);
     border-radius: 24px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     color: var(--dark-gray);
+    overflow-wrap: anywhere;
   }
 
   &__header {
@@ -558,16 +559,27 @@
   }
 
   @media (max-width: 660px) {
-    padding: 24px 0 48px;
+    padding: 16px 0 40px;
 
     &__document {
-      padding-top: 32px;
-      padding-bottom: 40px;
-      border-radius: 16px;
+      width: calc(100% - 24px);
+      padding: 24px 16px 32px;
+      border-radius: 14px;
+    }
+
+    &__header {
+      margin-bottom: 24px;
+    }
+
+    &__back-link {
+      margin-bottom: 20px;
+      font-size: 15px;
     }
 
     &__title {
-      font-size: 26px;
+      font-size: 22px;
+      line-height: 1.25;
+      text-align: left;
 
       span {
         font-size: 22px;
@@ -578,10 +590,24 @@
       flex-direction: column;
       gap: 8px;
       margin-top: 20px;
+      font-size: 14px;
+    }
+
+    &__intro,
+    &__section {
+      margin-top: 24px;
     }
 
     h2 {
-      font-size: 20px;
+      margin-bottom: 14px;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    h3 {
+      margin: 20px 0 10px;
+      font-size: 16px;
+      line-height: 1.35;
     }
 
     p,
@@ -589,6 +615,20 @@
     dd,
     address {
       font-size: 15px;
+      line-height: 1.6;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ol,
+    ul {
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 8px;
     }
   }
 }
