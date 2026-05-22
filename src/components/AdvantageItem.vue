@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="advantage-item"
-    :class="{ '--top': isTop, '--left': isLeft, '--right': isRight, '--bottom': isBottom }"
-  >
+  <div class="advantage-item" :class="positionClasses">
     <div class="advantage-item__header">
       <img class="advantage-item__icon" src="/icons/done.svg" alt="" />
       <div class="advantage-item__title">{{ advantage.title }}</div>
@@ -30,10 +27,21 @@ const props = defineProps({
   },
 })
 
-const isTop = computed(() => props.advantage.id === '1' || props.advantage.id === '2')
-const isLeft = computed(() => props.advantage.id === '1' || props.advantage.id === '3')
-const isRight = computed(() => props.advantage.id === '2' || props.advantage.id === '4')
-const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id === '4')
+const TOP_IDS = new Set(['1', '2'])
+const LEFT_IDS = new Set(['1', '3'])
+const RIGHT_IDS = new Set(['2', '4'])
+const BOTTOM_IDS = new Set(['3', '4'])
+
+const positionClasses = computed(() => {
+  const { id } = props.advantage
+
+  return {
+    '--top': TOP_IDS.has(id),
+    '--left': LEFT_IDS.has(id),
+    '--right': RIGHT_IDS.has(id),
+    '--bottom': BOTTOM_IDS.has(id),
+  }
+})
 </script>
 
 <style lang="scss" scoped>

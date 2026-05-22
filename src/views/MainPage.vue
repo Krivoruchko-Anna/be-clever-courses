@@ -285,7 +285,6 @@ const activeFormType = ref('lesson')
     align-items: center;
 
     @media (max-width: 660px) {
-      //align-items: flex-start;
       max-width: 118px;
       min-width: 90px;
     }
