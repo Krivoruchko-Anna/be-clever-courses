@@ -30,7 +30,7 @@ defineProps({
   align-items: center;
   max-width: 304px;
   padding: 8px 30px;
-  border-radius: 50px;
+  border-radius: 12px;
   border: none;
   color: var(--white);
   cursor: pointer;
@@ -41,7 +41,7 @@ defineProps({
   font-weight: bold;
 
   &.--green {
-    background-color: var(--japanese-laurel);
+    background-color: var(--apple);
   }
 
   &.--orange {
@@ -62,8 +62,9 @@ defineProps({
   }
 
   &:hover {
+    border-radius: 18px;
     opacity: 0.8;
-    filter: saturate(200%);
+    filter: saturate(150%);
   }
 
   @media (max-width: 1200px) {

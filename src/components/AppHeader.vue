@@ -27,9 +27,7 @@
 const menuItems = [
   { label: 'Главная', active: true },
   { label: 'Курсы' },
-  { label: 'Материалы' },
-  { label: 'Консультация' },
-  { label: 'Документы' },
+  { label: 'Контакты' },
 ]
 
 import { ref } from 'vue'
@@ -86,7 +84,7 @@ function toggleMenu() {
     color: var(--killarney);
     font-family: 'Mulish', Helvetica, sans-serif;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
 

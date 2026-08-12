@@ -1,8 +1,8 @@
 <template>
   <div class="app-contacts">
     <div class="app-contacts__info">
-      <h2 class="app-contacts__title">Наши контакты</h2>
       <div class="app-contacts__wrapper">
+        <h2 class="app-contacts__title">Наши контакты</h2>
         <div class="app-contacts__contact">
           <img src="/icons/website.svg" alt="website" class="icon" />
           <a href="https://beclever.by/" target="_blank" class="text">www.beclever.by</a>
@@ -59,6 +59,10 @@
       justify-content: flex-start;
       gap: 24px;
     }
+
+    @media (max-width: 400px) {
+      gap: 10px;
+    }
   }
 
   &__title {
@@ -88,7 +92,7 @@
   &__contact {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 16px;
 
     .icon {
       width: 28px;
@@ -104,7 +108,7 @@
       text-decoration: none;
 
       @media (max-width: 400px) {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       &:hover {
@@ -158,6 +162,11 @@
       width: 100%;
     }
   }
+  &__photo-bottom {
+    @media (max-width: 660px) {
+      display: none;
+    }
+  }
 
   &__clover {
     width: 320px;
@@ -169,11 +178,11 @@
     }
 
     @media (max-width: 900px) {
-      width: 160px;
+      width: 50%;
     }
 
     @media (max-width: 400px) {
-      width: 124px;
+      align-self: center;
     }
   }
 

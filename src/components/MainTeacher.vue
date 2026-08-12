@@ -205,7 +205,7 @@ onBeforeUnmount(() => {
   &__description {
     text-align: center;
     color: var(--dark-gray);
-    font-size: 18px;
+    font-size: 20px;
 
     @media (max-width: 900px) {
       font-size: 16px;
@@ -259,9 +259,9 @@ onBeforeUnmount(() => {
   }
 
   &__info-description {
-    margin-top: 28px;
+    margin-top: 20px;
     color: var(--dark-gray);
-    font-size: 16px;
+    font-size: 18px;
   }
 
   &__info-certificates {

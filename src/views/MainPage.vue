@@ -210,7 +210,7 @@ const activeFormType = ref('lesson')
   }
 
   &__promo-title {
-    color: var(--killarney);
+    color: var(--japanese-laurel);
     font-size: 30px;
     font-weight: 800;
 
@@ -241,7 +241,7 @@ const activeFormType = ref('lesson')
     margin-top: 38px;
 
     .digit-value {
-      color: var(--killarney);
+      color: var(--japanese-laurel);
       font-size: 40px;
       font-weight: 800;
 
@@ -394,6 +394,10 @@ const activeFormType = ref('lesson')
 
   &__contacts {
     margin-top: 80px;
+
+    @media (max-width: 400px) {
+      margin-top: 46px;
+    }
   }
 
   &__footer {
