@@ -11,23 +11,23 @@
 
     <nav class="header__navbar" :class="{ open: menuOpen }">
       <img src="/icons/logo.png" alt="clover logo" class="header__logo" />
-      <a
+      <RouterLink
         v-for="(item, index) in menuItems"
         :key="index"
-        href="#"
+        :to="item.link"
         :class="['header__nav-link', { 'header__nav-link--active': item.active }]"
       >
         {{ item.label }}
-      </a>
+      </RouterLink>
     </nav>
   </header>
 </template>
 
 <script setup>
 const menuItems = [
-  { label: 'Главная', active: true },
-  { label: 'Курсы' },
-  { label: 'Контакты' },
+  { label: 'Главная', active: true, link: '/' },
+  { label: 'Курсы', active: false, link: '/courses' },
+  { label: 'Контакты', active: false, link: '/' },
 ]
 
 import { ref } from 'vue'

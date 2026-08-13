@@ -66,6 +66,7 @@ const currentYear = new Date().getFullYear()
   }
 
   &__contact {
+    color: var(--white);
     text-decoration: none;
 
     &:hover {
@@ -103,6 +104,7 @@ const currentYear = new Date().getFullYear()
   &__info-link {
     width: 380px;
     display: block;
+    color: var(--white);
 
     &:hover {
       color: var(--hint-of-green-bright);

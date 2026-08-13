@@ -87,9 +87,8 @@
       <section class="main__contacts">
         <AppContacts class="container" />
       </section>
-
-      <AppFooter class="main__footer" />
     </main>
+    <AppFooter class="main__footer" />
   </div>
 </template>
 
@@ -117,7 +116,7 @@ const productCards = ref([
     icon: 'product_learn',
     description: 'Выстройте свою эффективную работу с готовым годовым курсом Be Clever',
     image: 'product_1.webp',
-    link: '',
+    link: 'courses',
   },
   {
     title: 'Авторские учебные материалы',

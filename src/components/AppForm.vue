@@ -3,14 +3,18 @@
     <div class="app-form__tabs">
       <div
         class="app-form__tab"
-        :class="{'--active': activeTab === 'lesson'}"
+        :class="{ '--active': activeTab === 'lesson' }"
         @click="activeTab = 'lesson'"
-      >Получить пробный урок</div>
+      >
+        Получить пробный урок
+      </div>
       <div
         class="app-form__tab"
-        :class="{'--active': activeTab === 'course'}"
+        :class="{ '--active': activeTab === 'course' }"
         @click="activeTab = 'course'"
-      >Приобрести годовой курс</div>
+      >
+        Приобрести годовой курс
+      </div>
     </div>
 
     <div class="app-form__content">
@@ -36,7 +40,7 @@
             <div>Я согласен(а) с</div>
             <span> политикой обработки персональных данных</span>
             и
-            <span>публичным договором</span>
+            <RouterLink to="/public-offer" class="app-form__link">публичным договором</RouterLink>
           </div>
         </div>
         <AppButton class="app-form__button" :text="buttonText" type="orange" />
@@ -50,13 +54,13 @@ import { computed, ref } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 
 const props = defineProps({
-  modelValue: String
+  modelValue: String,
 })
 const emit = defineEmits(['update:modelValue'])
 
 const activeTab = computed({
   get: () => props.modelValue || 'lesson',
-  set: (val) => emit('update:modelValue', val)
+  set: (val) => emit('update:modelValue', val),
 })
 
 const name = ref('')
@@ -68,7 +72,9 @@ const buttonText = computed(() => {
 })
 
 const hintText = computed(() => {
-  return activeTab.value === 'lesson' ? 'Мы отправим пример урока вам в телеграм' : 'Получите годовой курс для детей от 3-5 лет'
+  return activeTab.value === 'lesson'
+    ? 'Мы отправим пример урока вам в телеграм'
+    : 'Получите годовой курс для детей от 3-5 лет'
 })
 </script>
 
@@ -76,7 +82,9 @@ const hintText = computed(() => {
 .app-form {
   border-radius: 16px;
   background-color: var(--white);
-  box-shadow: 0 4px 3px #0000000a, 0 4px 14px #0000000a;
+  box-shadow:
+    0 4px 3px #0000000a,
+    0 4px 14px #0000000a;
 
   &__tabs {
     display: flex;
@@ -127,6 +135,10 @@ const hintText = computed(() => {
     @media (max-width: 660px) {
       padding: 20px 20px 24px;
     }
+  }
+
+  &__link {
+    color: var(--japanese-laurel);
   }
 
   &__hint {

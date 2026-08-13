@@ -14,7 +14,12 @@
         <p class="product-card__description">{{ product.description }}</p>
       </div>
 
-      <AppButton class="product-card__button" text="Подробнее" type="orange-outline" />
+      <AppButton
+        v-if="product.link"
+        class="product-card__button"
+        text="Подробнее"
+        type="orange-outline"
+      />
     </div>
   </div>
 </template>
@@ -24,8 +29,11 @@ import AppButton from '@/components/AppButton.vue'
 
 defineProps({
   product: {
-    type: Object,
-    required: true,
+    title: String,
+    icon: String,
+    description: String,
+    image: String,
+    link: String,
   },
 })
 </script>
