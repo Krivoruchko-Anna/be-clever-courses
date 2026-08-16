@@ -9,7 +9,7 @@
               <div class="courses__hero-tag">Для педагогов и репетиторов</div>
               <h1 class="courses__hero-title">
                 Годовой курс «Английский с нуля
-                <span>для детей 3–5 лет</span>
+                <span>для детей 3–5 лет»</span>
               </h1>
 
               <p class="courses__hero-description">
@@ -414,7 +414,7 @@ const handleFreeLessonClick = () => {
     font-weight: 800;
 
     span {
-      color: var(--killarney);
+      color: var(--hippi-green);
     }
   }
 
@@ -422,6 +422,7 @@ const handleFreeLessonClick = () => {
     margin: 22px 0 0;
     color: var(--tundora);
     font-size: 18px;
+    font-weight: 500;
     line-height: 26px;
 
     span {
@@ -440,15 +441,15 @@ const handleFreeLessonClick = () => {
   }
 
   &__hero-stat-value {
-    color: var(--japanese-laurel);
-    font-size: 26px;
+    color: var(--hippi-green);
+    font-size: 28px;
     font-weight: 800;
     line-height: 1;
   }
 
   &__hero-stat-title {
     margin-top: 8px;
-    color: var(--dove-gray);
+    color: var(--tundora);
     font-size: 16px;
   }
 
@@ -465,7 +466,7 @@ const handleFreeLessonClick = () => {
   &__hero-image {
     display: block;
     width: 100%;
-    border-radius: 32px;
+    border-radius: 18px;
   }
 
   &__section-description {

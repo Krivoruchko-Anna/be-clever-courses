@@ -43,8 +43,8 @@ const menuItems = computed(() => [
   },
   {
     label: 'Контакты',
-    active: route.path === '/' && route.hash === '#contacts',
-    link: '/#contacts',
+    active: route.path === '/contacts',
+    link: '/contacts',
   },
 ])
 

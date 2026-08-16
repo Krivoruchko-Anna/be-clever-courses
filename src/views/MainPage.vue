@@ -11,7 +11,7 @@
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
             <br />
-            <span>по системе смарт-клуба «Be&nbspClever»</span>
+            <span class="main__promo-smart">по системе смарт-клуба «Be&nbspClever»</span>
           </h1>
 
           <div class="main__promo-description">
@@ -213,7 +213,7 @@ const activeFormType = ref('lesson')
   }
 
   &__promo-title {
-    color: var(--japanese-laurel);
+    color: var(--tundora);
     font-size: 30px;
     font-weight: 800;
 
@@ -226,11 +226,16 @@ const activeFormType = ref('lesson')
     }
   }
 
+  &__promo-smart {
+    color: var(--hippi-green);
+  }
+
   &__promo-description {
     width: 580px;
     color: var(--dark-gray);
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
 
     @media (max-width: 900px) {
       max-width: 100%;
@@ -244,8 +249,8 @@ const activeFormType = ref('lesson')
     margin-top: 38px;
 
     .digit-value {
-      color: var(--japanese-laurel);
-      font-size: 40px;
+      color: var(--hippi-green);
+      font-size: 34px;
       font-weight: 800;
 
       @media (max-width: 1200px) {
@@ -262,7 +267,7 @@ const activeFormType = ref('lesson')
     }
 
     .digit-title {
-      color: var(--dark-gray);
+      color: var(--tundora);
       font-size: 16px;
       text-align: center;
 

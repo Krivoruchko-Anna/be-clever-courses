@@ -73,7 +73,7 @@ defineProps({
   }
 
   &.--green {
-    background-color: var(--apple);
+    background-color: var(--la-palma);
   }
 
   &.--green-outline {
