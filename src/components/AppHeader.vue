@@ -13,7 +13,7 @@
       <img src="/icons/logo.png" alt="clover logo" class="header__logo" />
       <RouterLink
         v-for="(item, index) in menuItems"
-        :key="index"
+        :key="index.label"
         :to="item.link"
         :class="['header__nav-link', { 'header__nav-link--active': item.active }]"
       >
@@ -24,15 +24,30 @@
 </template>
 
 <script setup>
-const menuItems = [
-  { label: 'Главная', active: true, link: '/' },
-  { label: 'Курсы', active: false, link: '/courses' },
-  { label: 'Контакты', active: false, link: '/' },
-]
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-import { ref } from 'vue'
-
+const route = useRoute()
 const menuOpen = ref(false)
+
+const menuItems = computed(() => [
+  {
+    label: 'Главная',
+    active: route.path === '/' && !route.hash,
+    link: '/',
+  },
+  {
+    label: 'Курсы',
+    active: route.path === '/courses',
+    link: '/courses',
+  },
+  {
+    label: 'Контакты',
+    active: route.path === '/' && route.hash === '#contacts',
+    link: '/#contacts',
+  },
+])
+
 function toggleMenu() {
   menuOpen.value = !menuOpen.value
 }

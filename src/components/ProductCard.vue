@@ -14,12 +14,14 @@
         <p class="product-card__description">{{ product.description }}</p>
       </div>
 
-      <AppButton
-        v-if="product.link"
-        class="product-card__button"
-        text="Подробнее"
-        type="orange-outline"
-      />
+      <RouterLink v-if="product.link" :to="product.link" class="product-card__button-link">
+        <AppButton
+          class="product-card__button"
+          text="Подробнее"
+          type="orange-outline"
+          height="34px"
+        />
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -89,6 +91,12 @@ defineProps({
   &__button {
     align-self: center;
     margin-top: 10px;
+  }
+
+  &__button-link {
+    align-self: center;
+    margin-top: 10px;
+    text-decoration: none;
   }
 
   &__icon {

@@ -43,7 +43,12 @@
             <RouterLink to="/public-offer" class="app-form__link">публичным договором</RouterLink>
           </div>
         </div>
-        <AppButton class="app-form__button" :text="buttonText" type="orange" />
+        <AppButton
+          class="app-form__button"
+          :text="buttonText"
+          type="orange"
+          @click="handleSubmit"
+        />
       </div>
     </div>
   </div>
@@ -76,6 +81,10 @@ const hintText = computed(() => {
     ? 'Мы отправим пример урока вам в телеграм'
     : 'Получите годовой курс для детей от 3-5 лет'
 })
+
+const handleSubmit = () => {
+  console.log('handleSubmit'); // TODO
+}
 </script>
 
 <style lang="scss">

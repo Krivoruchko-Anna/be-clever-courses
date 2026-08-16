@@ -28,10 +28,14 @@
 
           <div class="main__promo-buttons">
             <a href="#app-form" @click="activeFormType = 'lesson'">
-              <AppButton text="Получить пробный урок" />
+              <AppButton text="Получить пробный урок" height="56px" />
             </a>
             <a href="#app-form" @click="activeFormType = 'course'">
-              <AppButton text="Приобрести годовой курс для детей 3-5 лет" type="orange" />
+              <AppButton
+                text="Приобрести годовой курс для детей 3-5 лет"
+                type="orange"
+                height="56px"
+              />
             </a>
           </div>
         </div>
@@ -84,7 +88,7 @@
         </div>
       </section>
 
-      <section class="main__contacts">
+      <section class="main__contacts" id="contacts">
         <AppContacts class="container" />
       </section>
     </main>
