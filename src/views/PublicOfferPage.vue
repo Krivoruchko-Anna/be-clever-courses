@@ -229,7 +229,7 @@
             принимает на себя обязательства по оказанию Услуг только после получения от Заказчика
             подтверждения об оплате, путем предоставления квитанции или информации на E-mail
             Исполнителя:
-            <a href="mailto:Kovalenko.irene@yandex.ru">Kovalenko.irene@yandex.ru</a>
+            <a href="mailto:kovalenko.irene@yandex.ru">kovalenko.irene@yandex.ru</a>
           </p>
 
           <p>
@@ -260,7 +260,7 @@
           <p>
             <strong>5.8.</strong> Возврат денежных средств Исполнителем осуществляется по заявлению
             Пользователя, направленного на электронный адрес:
-            <a href="mailto:Kovalenko.irene@yandex.ru">Kovalenko.irene@yandex.ru</a>
+            <a href="mailto:kovalenko.irene@yandex.ru">kovalenko.irene@yandex.ru</a>
             до получения доступа к обучающим материалам, посещения мероприятия Исполнителя.
           </p>
 
@@ -278,7 +278,7 @@
             <strong>5.10.</strong> Решение о возврате или об отказе в возврате денежных средств
             принимается Исполнителем в течение 14 рабочих дней с момента получения соответствующего
             заявления Пользователя на адрес электронной почты
-            <a href="mailto:Kovalenko.irene@yandex.ru">Kovalenko.irene@yandex.ru</a>
+            <a href="mailto:kovalenko.irene@yandex.ru">kovalenko.irene@yandex.ru</a>
           </p>
 
           <p>
@@ -424,7 +424,7 @@
             </li>
             <li>
               E-mail:
-              <a href="mailto:Kovalenko.irene@yandex.ru">Kovalenko.irene@yandex.ru</a>
+              <a href="mailto:kovalenko.irene@yandex.ru">kovalenko.irene@yandex.ru</a>
             </li>
           </ul>
         </section>

@@ -10,7 +10,7 @@
   >
     <span class="app-button__wrapper">
       <span v-if="!link">{{ text }}</span>
-      <a v-else :href="link">
+      <a v-else :href="link" target="_blank">
         <span>{{ text }}</span>
       </a>
     </span>
@@ -62,7 +62,7 @@ defineProps({
   font-weight: bold;
 
   a {
-    color: var(--white);
+    color: inherit;
   }
 
   &__icon {

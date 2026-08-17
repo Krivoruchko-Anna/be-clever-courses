@@ -191,7 +191,7 @@
             class="courses__question-button"
             text="Написать в телеграм"
             type="green"
-            link="tel:+375259964261"
+            link="https://t.me/Irina_kovalenko_beclever"
             icon="telegram.svg"
           />
         </div>

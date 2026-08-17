@@ -47,9 +47,10 @@
             <div class="contacts-page__info-card">
               <h2 class="contacts-page__section-title">Адрес</h2>
 
-              <address class="contacts-page__address">
-                Беларусь, г. Гомель, ул. Кирова, 59Б, каб. 15
-              </address>
+              <div class="contacts-page__address">
+                <address>Беларусь, г. Гомель, ул. Кирова, 59Б, каб. 15</address>
+                <address>Беларусь, г. Гомель, Кирова 55, каб. 302</address>
+              </div>
 
               <img src="/images/clover.webp" class="contacts-page__clover" alt="clover" />
             </div>
@@ -62,8 +63,10 @@
 
             <iframe
               class="contacts-page__map"
-              src="https://yandex.by/map-widget/v1/?ll=31.002576%2C52.436762&mode=search&text=Гомель%2C%20улица%20Кирова%2059Б&z=17"
               title="Be Clever на карте"
+              src="https://yandex.ru/map-widget/v1/?um=constructor%3A67fadc5567c0c40994292b8007cca2485cb8c45780de39db428fcf2e6ba6dc8b&amp;source=constructor"
+              width="1065"
+              height="700"
               loading="lazy"
             ></iframe>
           </div>
@@ -89,8 +92,8 @@ const contacts = [
   },
   {
     title: 'E-mail',
-    value: 'Kovalenko.irene@yandex.ru',
-    href: 'mailto:Kovalenko.irene@yandex.ru',
+    value: 'kovalenko.irene@yandex.ru',
+    href: 'mailto:kovalenko.irene@yandex.ru',
     icon: '/icons/website.svg',
     external: false,
   },
@@ -156,7 +159,7 @@ const contacts = [
 
   &__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.9fr);
     gap: 28px;
   }
 
@@ -164,7 +167,7 @@ const contacts = [
   &__info-card,
   &__map-card {
     box-sizing: border-box;
-    padding: 30px;
+    padding: 24px;
     background-color: var(--white);
     border: 1px solid var(--satin-linen);
     border-radius: 18px;
@@ -235,10 +238,25 @@ const contacts = [
 
   &__address {
     margin-top: 20px;
-    color: var(--tundora);
-    font-size: 15px;
-    font-style: normal;
-    line-height: 26px;
+
+    address {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--tundora);
+      font-size: 15px;
+      font-style: normal;
+      line-height: 26px;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--la-palma);
+      }
+    }
   }
 
   &__clover {

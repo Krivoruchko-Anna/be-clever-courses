@@ -116,7 +116,7 @@ const digits = [
 
 const productCards = ref([
   {
-    title: 'Авторские курсы для детей 3-5 лет',
+    title: 'Авторский курс для детей 3-5 лет',
     icon: 'product_learn',
     description: 'Выстройте свою эффективную работу с готовым годовым курсом Be Clever',
     image: 'product_1.webp',

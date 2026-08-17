@@ -70,7 +70,12 @@
           </div>
         </div>
 
-        <AppButton class="teacher__button" text="Запись на консультацию" type="orange-outline" />
+        <AppButton
+          class="teacher__button"
+          text="Запись на консультацию"
+          type="orange-outline"
+          link="https://t.me/Irina_kovalenko_beclever"
+        />
 
         <!-- Certificates Modal -->
         <div

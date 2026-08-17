@@ -37,7 +37,7 @@ const menuItems = computed(() => [
     link: '/',
   },
   {
-    label: 'Курсы',
+    label: 'Курс',
     active: route.path === '/courses',
     link: '/courses',
   },
