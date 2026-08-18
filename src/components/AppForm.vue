@@ -29,7 +29,8 @@
           <input v-model="phone" class="app-form__input" placeholder="+375 XX XXX-XX-XX" />
         </div>
         <div class="app-form__field">
-          <div class="app-form__label">Ник в Telegram</div>
+          <div v-if="activeTab === 'lesson'" class="app-form__label">Ник в Telegram</div>
+          <div v-else class="app-form__label">Почта *</div>
           <input v-model="nick" class="app-form__input" placeholder="@ваш_ник" />
         </div>
       </div>
@@ -83,7 +84,7 @@ const hintText = computed(() => {
 })
 
 const handleSubmit = () => {
-  console.log('handleSubmit'); // TODO
+  console.log('handleSubmit') // TODO
 }
 </script>
 
