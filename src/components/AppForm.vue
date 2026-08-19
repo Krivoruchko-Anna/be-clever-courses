@@ -44,7 +44,14 @@
 
         <div class="app-form__field">
           <div class="app-form__label">Номер телефона *</div>
-          <input v-model="phone" class="app-form__input" placeholder="+375 XX XXX-XX-XX" />
+          <input
+            v-model="phone"
+            class="app-form__input"
+            :class="{ '--error': phoneError }"
+            placeholder="+375 XX XXX-XX-XX"
+            @input="phoneError = ''"
+          />
+          <div v-if="phoneError" class="app-form__field-error">{{ phoneError }}</div>
         </div>
 
         <div class="app-form__field">
@@ -59,15 +66,29 @@
       </div>
 
       <div class="app-form__footer">
-        <label class="app-form__agreement">
+        <div class="app-form__agreement">
           <input v-model="isAgreed" class="app-form__checkbox" type="checkbox" />
           <div class="app-form__agreement-text">
             <div>Я согласен(а) с</div>
-            <span> политикой обработки персональных данных</span>
+            <RouterLink
+              to="/personal-data-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="app-form__link"
+            >
+              политикой обработки персональных данных
+            </RouterLink>
             и
-            <RouterLink to="/public-offer" class="app-form__link">публичным договором</RouterLink>
+            <RouterLink
+              to="/public-offer"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="app-form__link"
+            >
+              публичным договором
+            </RouterLink>
           </div>
-        </label>
+        </div>
 
         <AppButton
           class="app-form__button"
@@ -90,8 +111,7 @@
 
         <template v-else>
           <div class="app-form__payment-text">
-            Здесь будет отображаться ссылка, QR-код или инструкция для оплаты после получения данных
-            EPOS от заказчика.
+            Здесь будет отображаться ссылка, QR-код или инструкция для оплаты
           </div>
         </template>
       </div>
@@ -148,6 +168,23 @@ const promoCode = ref(props.initialPromo)
 const isAgreed = ref(false)
 const isSubmitted = ref(false)
 const submitMessage = ref('')
+const phoneError = ref('')
+
+const belarusPhoneRegex = /^\+375\s?\(?(25|29|33|44)\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/
+
+const normalizePhone = (value) => {
+  const digits = value.replace(/\D/g, '')
+
+  if (digits.startsWith('375')) {
+    return `+${digits}`
+  }
+
+  return value.trim()
+}
+
+const isBelarusPhoneValid = (value) => {
+  return belarusPhoneRegex.test(normalizePhone(value))
+}
 
 watch(
   () => props.initialPromo,
@@ -232,8 +269,16 @@ const displayedProductPrice = computed(() => {
 })
 
 const handleSubmit = () => {
+  phoneError.value = ''
+
   if (!name.value || !phone.value || (isPurchase.value && !contact.value)) {
     submitMessage.value = 'Пожалуйста, заполните обязательные поля.'
+    return
+  }
+
+  if (!isBelarusPhoneValid(phone.value)) {
+    phoneError.value = 'Введите номер телефона в формате +375 XX XXX XX XX'
+    submitMessage.value = 'Пожалуйста, проверьте номер телефона.'
     return
   }
 
@@ -265,7 +310,7 @@ const handleSubmit = () => {
 
   isSubmitted.value = true
   submitMessage.value = isPurchase.value
-    ? 'Заявка сформирована. Ниже показан блок оплаты.'
+    ? 'Заявка сформирована. Ниже показан блок для оплаты.'
     : 'Спасибо! Мы свяжемся с вами.'
 }
 </script>
@@ -372,6 +417,11 @@ const handleSubmit = () => {
 
   &__link {
     color: var(--hippi-green);
+    transition: all 0.2s;
+
+    &:hover {
+      color: var(--la-palma);
+    }
   }
 
   &__hint {
@@ -433,6 +483,17 @@ const handleSubmit = () => {
     box-sizing: border-box;
     font-size: 14px;
     color: var(--gray);
+
+    &.--error {
+      border-color: var(--error);
+    }
+  }
+
+  &__field-error {
+    margin-top: 6px;
+    color: var(--error);
+    font-size: 13px;
+    line-height: 18px;
   }
 
   &__footer {
@@ -453,8 +514,15 @@ const handleSubmit = () => {
 
   &__agreement {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
+
+    input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--la-palma);
+      cursor: pointer;
+    }
   }
 
   &__agreement-text {
