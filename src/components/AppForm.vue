@@ -18,13 +18,13 @@
     </div>
 
     <div class="app-form__content">
-      <div v-if="product" class="app-form__product">
-        <div class="app-form__product-label">Выбранный продукт</div>
-        <div class="app-form__product-title">{{ product.title }}</div>
+      <div v-if="displayedPurchaseProduct" class="app-form__product">
+        <div class="app-form__product-label">{{ purchaseProductLabel }}</div>
+        <div class="app-form__product-title">{{ displayedPurchaseProduct.title }}</div>
         <div class="app-form__product-price">
           <span>{{ displayedProductPrice }}</span>
           <span v-if="isProductPromoApplied" class="app-form__product-old-price">
-            {{ product.price }}
+            {{ displayedPurchaseProduct.price }}
           </span>
         </div>
 
@@ -84,8 +84,8 @@
       <div v-if="showPaymentBlock" class="app-form__payment">
         <div class="app-form__payment-title">Оплата через EPOS</div>
 
-        <template v-if="product?.eposInstruction">
-          <div class="app-form__payment-text">{{ product.eposInstruction }}</div>
+        <template v-if="displayedPurchaseProduct?.eposInstruction">
+          <div class="app-form__payment-text">{{ displayedPurchaseProduct.eposInstruction }}</div>
         </template>
 
         <template v-else>
@@ -121,6 +121,17 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  courseProduct: {
+    type: Object,
+    default: () => ({
+      id: 'full-course',
+      title: 'Вся программа',
+      price: '1000 руб.',
+      priceValue: 1000,
+      period: '/ 9 месяцев',
+      eposInstruction: '',
+    }),
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'submit'])
@@ -146,6 +157,22 @@ watch(
 )
 
 const isPurchase = computed(() => Boolean(props.product) || activeTab.value === 'course')
+
+const displayedPurchaseProduct = computed(() => {
+  if (props.product) {
+    return props.product
+  }
+
+  if (activeTab.value === 'course') {
+    return props.courseProduct
+  }
+
+  return null
+})
+
+const purchaseProductLabel = computed(() => {
+  return props.product ? 'Выбранный продукт' : 'Стоимость курса'
+})
 
 const buttonText = computed(() => {
   if (props.product) return 'Оформить заявку'
@@ -175,7 +202,7 @@ const showPaymentBlock = computed(() => {
 })
 
 const appliedPromoCode = computed(() => {
-  if (!props.product || !promoCode.value.trim()) {
+  if (!displayedPurchaseProduct.value || !promoCode.value.trim()) {
     return null
   }
 
@@ -185,20 +212,20 @@ const appliedPromoCode = computed(() => {
 const isProductPromoApplied = computed(() => Boolean(appliedPromoCode.value))
 
 const finalProductPriceValue = computed(() => {
-  if (!props.product?.priceValue) {
+  if (!displayedPurchaseProduct.value?.priceValue) {
     return 0
   }
 
-  return getFinalPriceValue(props.product.priceValue, appliedPromoCode.value)
+  return getFinalPriceValue(displayedPurchaseProduct.value.priceValue, appliedPromoCode.value)
 })
 
 const displayedProductPrice = computed(() => {
-  if (!props.product) {
+  if (!displayedPurchaseProduct.value) {
     return ''
   }
 
   if (!isProductPromoApplied.value) {
-    return props.product.price
+    return displayedPurchaseProduct.value.price
   }
 
   return formatPrice(finalProductPriceValue.value)
@@ -215,15 +242,15 @@ const handleSubmit = () => {
     return
   }
 
-  const preparedProduct = props.product
+  const preparedProduct = displayedPurchaseProduct.value
     ? {
-        ...props.product,
-        originalPrice: props.product.price,
+        ...displayedPurchaseProduct.value,
+        originalPrice: displayedPurchaseProduct.value.price,
         price: displayedProductPrice.value,
         finalPriceValue: finalProductPriceValue.value,
         appliedPromoCode: appliedPromoCode.value,
       }
-    : props.product
+    : null
 
   const payload = {
     type: props.product ? 'purchase' : activeTab.value,
