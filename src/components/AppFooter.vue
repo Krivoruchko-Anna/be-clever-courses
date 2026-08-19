@@ -70,7 +70,7 @@ const currentYear = new Date().getFullYear()
     text-decoration: none;
 
     &:hover {
-      color: var(--hint-of-green-dark);
+      color: var(--spring-rain);
     }
   }
 

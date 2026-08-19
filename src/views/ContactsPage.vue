@@ -48,8 +48,8 @@
               <h2 class="contacts-page__section-title">Адрес</h2>
 
               <div class="contacts-page__address">
-                <address>Беларусь, г. Гомель, ул. Кирова, 59Б, каб. 15</address>
-                <address>Беларусь, г. Гомель, Кирова 55, каб. 302</address>
+                <address>Гомель, ул. Кирова, 59Б, каб. 15</address>
+                <address>Гомель, Кирова 55, каб. 302</address>
               </div>
 
               <img src="/images/clover.webp" class="contacts-page__clover" alt="clover" />

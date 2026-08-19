@@ -79,12 +79,11 @@ defineProps({
   &.--green-outline {
     padding: 12px 30px;
     background-color: transparent;
-    border: 2px solid var(--japanese-laurel);
-    color: var(--japanese-laurel);
+    border: 2px solid var(--la-palma);
+    color: var(--la-palma);
 
     @media (max-width: 1200px) {
       padding: 8px 24px;
-      font-size: 14px;
     }
   }
 
@@ -97,11 +96,9 @@ defineProps({
     background-color: transparent;
     border: 2px solid var(--ecstasy);
     color: var(--ecstasy);
-    font-size: 18px;
 
     @media (max-width: 1200px) {
       padding: 8px 24px;
-      font-size: 14px;
     }
   }
 
@@ -119,8 +116,8 @@ defineProps({
     max-width: 100%;
   }
 
-  @media (max-width: 900px) {
-    font-size: 14px;
+  @media (max-width: 600px) {
+    font-size: 15px;
   }
 }
 </style>

@@ -13,8 +13,8 @@
 defineProps({
   question: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
 })
 </script>
 
@@ -29,15 +29,21 @@ defineProps({
   }
 
   &__icon {
+    width: 24px;
+
     @media (max-width: 900px) {
-      width: 24px
+      width: 20px;
     }
   }
 
   &__question {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
     color: var(--ecstasy);
+
+    @media (max-width: 900px) {
+      font-size: 18px;
+    }
 
     @media (max-width: 660px) {
       font-size: 16px;
@@ -46,13 +52,13 @@ defineProps({
 
   &__answer {
     margin-top: 16px;
-    margin-left: 42px;
+    margin-left: 36px;
     line-height: 24px;
     font-size: 16px;
     color: var(--tundora);
 
     @media (max-width: 1200px) {
-      margin-top: 4px;
+      margin-top: 10px;
     }
   }
 }

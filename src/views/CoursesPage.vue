@@ -166,19 +166,20 @@
           </div>
 
           <div class="courses__pricing-list">
-            <CoursePricingCard
-              v-for="card in pricingCards"
-              :key="card.title"
-              :title="card.title"
-              :badge="card.badge"
-              :price="card.price"
-              :price-value="card.priceValue"
-              :period="card.period"
-              :features="card.features"
-              :button-text="card.buttonText"
-              :button-type="card.buttonType"
-              :highlighted="card.highlighted"
-            />
+            <div v-for="card in pricingCards" :key="card.id" class="courses__pricing-item">
+              <CoursePricingCard
+                :title="card.title"
+                :badge="card.badge"
+                :price="card.price"
+                :price-value="card.priceValue"
+                :period="card.period"
+                :features="card.features"
+                :button-text="card.buttonText"
+                :button-type="card.buttonType"
+                :highlighted="card.highlighted"
+                @purchase="openPurchaseModal(card, $event)"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -199,13 +200,26 @@
     </main>
 
     <AppFooter />
+
+    <AppModal v-if="selectedProduct" @close="closePurchaseModal">
+      <AppForm
+        hide-tabs
+        model-value="course"
+        :product="selectedProduct"
+        :initial-promo="selectedProductPromoCode"
+        @submit="handlePurchaseSubmit"
+      />
+    </AppModal>
   </div>
 </template>
 
 <script setup>
+import { onBeforeUnmount, ref } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import AppButton from '@/components/AppButton.vue'
+import AppForm from '@/components/AppForm.vue'
+import AppModal from '@/components/AppModal.vue'
 import CourseInfoCard from '@/components/CourseInfoCard.vue'
 import CoursePricingCard from '@/components/CoursePricingCard.vue'
 
@@ -344,7 +358,8 @@ const audienceItems = [
 
 const pricingCards = [
   {
-    title: 'Помесячно',
+    id: 'month',
+    title: '1 месяц',
     badge: '',
     price: '100 руб.',
     priceValue: 100,
@@ -357,8 +372,10 @@ const pricingCards = [
     buttonText: 'Купить 1 месяц',
     buttonType: 'green-outline',
     highlighted: false,
+    eposInstruction: '',
   },
   {
+    id: 'full-course',
     title: 'Вся программа',
     badge: 'Выгоднее',
     price: '1000 руб.',
@@ -368,8 +385,33 @@ const pricingCards = [
     buttonText: 'Купить целиком',
     buttonType: 'orange',
     highlighted: true,
+    eposInstruction: '',
   },
 ]
+
+const promoCode = ref('')
+const selectedProduct = ref(null)
+const selectedProductPromoCode = ref('')
+
+const openPurchaseModal = (product, purchaseData = {}) => {
+  selectedProduct.value = product
+  selectedProductPromoCode.value = purchaseData.promoCode || promoCode.value || ''
+  document.body.style.overflow = 'hidden'
+}
+
+const closePurchaseModal = () => {
+  selectedProduct.value = null
+  selectedProductPromoCode.value = ''
+  document.body.style.overflow = ''
+}
+
+const handlePurchaseSubmit = (payload) => {
+  console.log('purchase payload', payload) // TODO: отправка заявки заказчику / backend
+}
+
+onBeforeUnmount(() => {
+  document.body.style.overflow = ''
+})
 
 const handleFreeLessonClick = () => {
   console.log('handleFreeLessonClick') // TODO
@@ -642,6 +684,31 @@ const handleFreeLessonClick = () => {
     background-color: var(--hint-of-green);
   }
 
+  &__promo {
+    width: min(420px, 100%);
+    margin-top: 28px;
+  }
+
+  &__promo-label {
+    color: var(--killarney);
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  &__promo-input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    margin-top: 8px;
+    padding: 14px 16px;
+    border: var(--mercury) 2px solid;
+    border-radius: 12px;
+    outline: none;
+    color: var(--gray);
+    font-size: 14px;
+  }
+
   &__pricing-list {
     margin-top: 42px;
     display: flex;
@@ -691,6 +758,11 @@ const handleFreeLessonClick = () => {
     &__pricing-list {
       flex-direction: column;
       align-items: center;
+    }
+
+    &__pricing-item {
+      width: 100%;
+      max-width: 420px;
     }
   }
 

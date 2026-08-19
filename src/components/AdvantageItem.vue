@@ -46,7 +46,7 @@ const positionClasses = computed(() => {
 
 <style lang="scss" scoped>
 .advantage-item {
-  max-width: 440px;
+  max-width: 426px;
 
   &__header {
     display: flex;
@@ -55,18 +55,22 @@ const positionClasses = computed(() => {
   }
 
   &__icon {
-    width: 30px;
+    width: 24px;
     height: auto;
 
     @media (max-width: 900px) {
-      width: 24px;
+      width: 20px;
     }
   }
 
   &__title {
     color: var(--japanese-laurel);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
+
+    @media (max-width: 900px) {
+      font-size: 18px;
+    }
 
     @media (max-width: 660px) {
       font-size: 16px;
@@ -75,13 +79,13 @@ const positionClasses = computed(() => {
 
   &__body {
     margin-top: 14px;
-    margin-left: 42px;
+    margin-left: 36px;
     line-height: 24px;
     font-size: 16px;
     color: var(--tundora);
 
     @media (max-width: 1200px) {
-      margin-top: 4px;
+      margin-top: 10px;
     }
   }
 
@@ -101,22 +105,22 @@ const positionClasses = computed(() => {
   }
 
   &.--top {
-    padding-bottom: 42px;
+    padding-bottom: 36px;
     border-bottom: 1px dashed var(--la-palma);
   }
 
   &.--left {
-    padding-right: 42px;
+    padding-right: 36px;
     border-right: 1px dashed var(--la-palma);
   }
 
   &.--right {
-    padding-left: 42px;
+    padding-left: 36px;
   }
 
   &.--bottom {
-    padding-top: 42px;
-    padding-bottom: 42px;
+    padding-top: 36px;
+    padding-bottom: 36px;
   }
 
   @media (max-width: 1200px) {

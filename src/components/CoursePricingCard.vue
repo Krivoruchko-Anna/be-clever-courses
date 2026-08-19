@@ -33,6 +33,7 @@
               <input
                 v-model="promoCode"
                 type="text"
+                id="course-promo-input"
                 class="course-pricing-card__promo-input"
                 placeholder="Введите промокод"
                 autocomplete="off"
@@ -61,7 +62,12 @@
           </div>
         </div>
 
-        <AppButton class="course-pricing-card__button" :text="buttonText" :type="buttonType" />
+        <AppButton
+          class="course-pricing-card__button"
+          :text="buttonText"
+          :type="buttonType"
+          @click.stop="handlePurchaseClick"
+        />
       </div>
     </div>
   </div>
@@ -69,6 +75,14 @@
 <script setup>
 import { computed, ref } from 'vue'
 import AppButton from '@/components/AppButton.vue'
+import {
+  findPromoCode,
+  formatPrice,
+  getDiscountAmount,
+  getFinalPriceValue,
+} from '@/constants/promoCodes'
+
+const emit = defineEmits(['purchase'])
 
 const props = defineProps({
   title: {
@@ -125,17 +139,13 @@ const normalizedPromoCode = computed(() => promoCode.value.trim().toUpperCase())
 const isPromoApplied = computed(() => Boolean(appliedPromoCode.value))
 const promoCodeButtonText = computed(() => (isPromoApplied.value ? 'Отменить' : 'Применить'))
 
-const formatPrice = (value) => `${new Intl.NumberFormat('ru-RU').format(value)} руб.`
-
 const discountAmount = computed(() => {
-  if (!appliedPromoCode.value) {
-    return 0
-  }
-
-  return Math.round((props.priceValue * appliedPromoCode.value.discountPercent) / 100)
+  return getDiscountAmount(props.priceValue, appliedPromoCode.value)
 })
 
-const finalPrice = computed(() => Math.max(props.priceValue - discountAmount.value, 0))
+const finalPrice = computed(() => {
+  return getFinalPriceValue(props.priceValue, appliedPromoCode.value)
+})
 
 const displayedPrice = computed(() => {
   if (!isPromoApplied.value) {
@@ -157,8 +167,7 @@ const promoMessage = computed(() => {
   return ''
 })
 
-const findPromoCode = () =>
-  promoCodes.find((promoCodeItem) => promoCodeItem.code === normalizedPromoCode.value)
+const findCurrentPromoCode = () => findPromoCode(normalizedPromoCode.value)
 
 const resetPromoCode = () => {
   appliedPromoCode.value = null
@@ -176,7 +185,7 @@ const applyPromoCode = () => {
     return
   }
 
-  const foundPromoCode = findPromoCode()
+  const foundPromoCode = findCurrentPromoCode()
 
   if (!foundPromoCode) {
     appliedPromoCode.value = null
@@ -185,6 +194,7 @@ const applyPromoCode = () => {
   }
 
   appliedPromoCode.value = foundPromoCode
+  promoCode.value = foundPromoCode.code
   promoStatus.value = 'success'
 }
 
@@ -195,6 +205,34 @@ const handlePromoCodeButtonClick = () => {
   }
 
   applyPromoCode()
+}
+
+const getPurchasePayload = () => {
+  const foundPromoCode = findCurrentPromoCode()
+  const promoForPurchase = appliedPromoCode.value || foundPromoCode
+  const finalPriceValue = getFinalPriceValue(props.priceValue, promoForPurchase)
+  const discount = getDiscountAmount(props.priceValue, promoForPurchase)
+
+  return {
+    promoCode: promoForPurchase?.code || promoCode.value.trim(),
+    appliedPromoCode: promoForPurchase,
+    isPromoApplied: Boolean(promoForPurchase),
+    discountAmount: discount,
+    finalPriceValue,
+    displayedPrice: promoForPurchase ? formatPrice(finalPriceValue) : props.price,
+  }
+}
+
+const handlePurchaseClick = () => {
+  const purchasePayload = getPurchasePayload()
+
+  if (purchasePayload.appliedPromoCode) {
+    promoCode.value = purchasePayload.appliedPromoCode.code
+    appliedPromoCode.value = purchasePayload.appliedPromoCode
+    promoStatus.value = 'success'
+  }
+
+  emit('purchase', purchasePayload)
 }
 </script>
 
@@ -377,16 +415,16 @@ const handlePromoCodeButtonClick = () => {
   }
 
   &__promo-message {
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 13px;
     line-height: 18px;
 
     &.--success {
-      color: var(--killarney);
+      color: var(--hippi-green);
     }
 
     &.--error {
-      color: var(--ecstasy);
+      color: var(--error);
     }
   }
 

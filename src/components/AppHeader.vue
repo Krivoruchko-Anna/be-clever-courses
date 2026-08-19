@@ -96,7 +96,7 @@ function toggleMenu() {
   }
 
   &__nav-link {
-    color: var(--killarney);
+    color: var(--hippi-green);
     font-family: 'Mulish', Helvetica, sans-serif;
     font-size: 16px;
     font-weight: 600;

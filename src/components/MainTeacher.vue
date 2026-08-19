@@ -242,7 +242,7 @@ onBeforeUnmount(() => {
   }
 
   &__info-name {
-    color: var(--dark-gray);
+    color: var(--tundora);
     font-size: 26px;
     font-weight: 800;
 

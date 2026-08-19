@@ -48,7 +48,6 @@ defineProps({
   height: auto;
   border-radius: 16px;
   transition: all 0.3s;
-  cursor: pointer;
   box-shadow: 0 4px 9px #0000001a;
 
   &:hover {
@@ -100,7 +99,7 @@ defineProps({
   }
 
   &__icon {
-    width: 36px;
+    width: 42px;
   }
 
   .app-button.--orange-outline {

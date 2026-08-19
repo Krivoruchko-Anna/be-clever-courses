@@ -4,17 +4,23 @@
       <div class="app-contacts__wrapper">
         <h2 class="app-contacts__title">Наши контакты</h2>
         <div class="app-contacts__contact">
-          <img src="/icons/website.svg" alt="website" class="icon" />
+          <div class="icon-wrapper">
+            <img src="/icons/website.svg" alt="website" class="icon" />
+          </div>
           <a href="https://beclever.by/" target="_blank" class="text">www.beclever.by</a>
         </div>
         <div class="app-contacts__contact">
-          <img src="/icons/instagram.svg" alt="website" class="icon" />
+          <div class="icon-wrapper">
+            <img src="/icons/instagram.svg" alt="website" class="icon" />
+          </div>
           <a href="https://instagram.com/i.kovalenko_beclever" target="_blank" class="text"
             >i.kovalenko_beclever</a
           >
         </div>
         <div class="app-contacts__contact">
-          <img src="/icons/phone.svg" alt="website" class="icon" />
+          <div class="icon-wrapper">
+            <img src="/icons/phone.svg" alt="website" class="icon" />
+          </div>
           <a href="tel:+375259964261" class="text">+375 25 966-42-61</a>
         </div>
       </div>
@@ -67,7 +73,8 @@
 
   &__title {
     font-size: 38px;
-    color: var(--japanese-laurel);
+    font-weight: 600;
+    color: var(--hippi-green);
 
     @media (max-width: 1200px) {
       font-size: 34px;
@@ -94,8 +101,21 @@
     align-items: center;
     gap: 16px;
 
+    .icon-wrapper {
+      display: flex;
+      flex: 0 0 44px;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background-color: var(--kidnapper);
+    }
+
     .icon {
-      width: 28px;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
 
       @media (max-width: 660px) {
         width: 20px;
