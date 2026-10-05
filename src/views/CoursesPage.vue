@@ -30,14 +30,14 @@
                 </div>
               </div>
 
-              <a href="#pricing" class="courses__hero-button">
+              <div class="courses__hero-button">
                 <AppButton
                   text="Попробовать урок бесплатно"
                   type="orange"
                   height="56px"
-                  @click="handleFreeLessonClick"
+                  :link="freeLessonLink"
                 />
-              </a>
+              </div>
             </div>
 
             <div class="courses__hero-image-wrapper">
@@ -152,9 +152,9 @@
             />
           </div>
 
-          <a href="#pricing" class="courses__audience-button">
-            <AppButton text="Попробовать урок бесплатно" type="orange" />
-          </a>
+          <div class="courses__audience-button">
+            <AppButton text="Попробовать урок бесплатно" type="orange" :link="freeLessonLink" />
+          </div>
         </div>
       </section>
 
@@ -214,7 +214,8 @@
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref } from 'vue'
+import { onBeforeUnmount, ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -222,6 +223,18 @@ import AppForm from '@/components/AppForm.vue'
 import AppModal from '@/components/AppModal.vue'
 import CourseInfoCard from '@/components/CourseInfoCard.vue'
 import CoursePricingCard from '@/components/CoursePricingCard.vue'
+
+const router = useRouter()
+
+const freeLessonLink = computed(() => {
+  return router.resolve({
+    name: 'MainPage',
+    query: {
+      form: 'lesson',
+    },
+    hash: '#app-form',
+  }).href
+})
 
 const courseStats = [
   { value: '72', title: 'готовых урока' },
@@ -413,9 +426,9 @@ onBeforeUnmount(() => {
   document.body.style.overflow = ''
 })
 
-const handleFreeLessonClick = () => {
-  console.log('handleFreeLessonClick') // TODO
-}
+// const handleFreeLessonClick = () => {
+//   console.log('handleFreeLessonClick') // TODO
+// }
 </script>
 
 <style scoped lang="scss">

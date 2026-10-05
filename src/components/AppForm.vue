@@ -98,8 +98,8 @@
         />
       </div>
 
-      <div v-if="submitMessage" class="app-form__message">
-        {{ submitMessage }}
+      <div v-if="visibleSubmitMessage" class="app-form__message">
+        {{ visibleSubmitMessage }}
       </div>
 
       <div v-if="showPaymentBlock" class="app-form__payment">
@@ -168,6 +168,7 @@ const promoCode = ref(props.initialPromo)
 const isAgreed = ref(false)
 const isSubmitted = ref(false)
 const submitMessage = ref('')
+const submittedFormType = ref('')
 const phoneError = ref('')
 
 const belarusPhoneRegex = /^\+375\s?\(?(25|29|33|44)\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/
@@ -194,6 +195,14 @@ watch(
 )
 
 const isPurchase = computed(() => Boolean(props.product) || activeTab.value === 'course')
+
+const currentFormType = computed(() => {
+  if (props.product) {
+    return 'purchase'
+  }
+
+  return activeTab.value
+})
 
 const displayedPurchaseProduct = computed(() => {
   if (props.product) {
@@ -235,7 +244,15 @@ const contactPlaceholder = computed(() => {
 })
 
 const showPaymentBlock = computed(() => {
-  return isSubmitted.value && isPurchase.value
+  return isSubmitted.value && isPurchase.value && submittedFormType.value === currentFormType.value
+})
+
+const visibleSubmitMessage = computed(() => {
+  if (!submitMessage.value || submittedFormType.value !== currentFormType.value) {
+    return ''
+  }
+
+  return submitMessage.value
 })
 
 const appliedPromoCode = computed(() => {
@@ -268,8 +285,19 @@ const displayedProductPrice = computed(() => {
   return formatPrice(finalProductPriceValue.value)
 })
 
+const clearFormFields = () => {
+  name.value = ''
+  phone.value = ''
+  contact.value = ''
+  promoCode.value = ''
+  isAgreed.value = false
+  phoneError.value = ''
+}
+
 const handleSubmit = () => {
   phoneError.value = ''
+  submittedFormType.value = currentFormType.value
+  isSubmitted.value = false
 
   if (!name.value || !phone.value || (isPurchase.value && !contact.value)) {
     submitMessage.value = 'Пожалуйста, заполните обязательные поля.'
@@ -312,6 +340,8 @@ const handleSubmit = () => {
   submitMessage.value = isPurchase.value
     ? 'Заявка сформирована. Ниже показан блок для оплаты.'
     : 'Спасибо! Мы свяжемся с вами.'
+
+  clearFormFields()
 }
 </script>
 

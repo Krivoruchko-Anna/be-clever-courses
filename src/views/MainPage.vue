@@ -27,16 +27,13 @@
           </div>
 
           <div class="main__promo-buttons">
-            <a href="#app-form" @click="activeFormType = 'lesson'">
-              <AppButton text="Получить пробный урок" height="56px" />
-            </a>
-            <a href="#app-form" @click="activeFormType = 'course'">
-              <AppButton
-                text="Приобрести годовой курс для детей 3-5 лет"
-                type="orange"
-                height="56px"
-              />
-            </a>
+            <AppButton text="Получить пробный урок" height="56px" @click="scrollToForm('lesson')" />
+            <AppButton
+              text="Приобрести годовой курс для детей 3-5 лет"
+              height="56px"
+              type="orange"
+              @click="scrollToForm('course')"
+            />
           </div>
         </div>
       </section>
@@ -82,7 +79,7 @@
         </div>
       </section>
 
-      <section class="main__form" id="app-form">
+      <section ref="formSectionRef" class="main__form" id="app-form">
         <div class="container">
           <AppForm v-model="activeFormType" />
         </div>
@@ -97,7 +94,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import AppButton from '../components/AppButton.vue'
 import ProductCard from '@/components/ProductCard.vue'
@@ -107,6 +105,8 @@ import QuestionItem from '@/components/QuestionItem.vue'
 import AppForm from '@/components/AppForm.vue'
 import AppContacts from '@/components/AppContacts.vue'
 import AppFooter from '@/components/AppFooter.vue'
+
+const route = useRoute()
 
 const digits = [
   { title: 'Учеников', value: '500+' },
@@ -194,6 +194,48 @@ const questionsList = ref([
 ])
 
 const activeFormType = ref('lesson')
+const formSectionRef = ref(null)
+
+const getRouteFormType = () => {
+  return route.query.form === 'course' ? 'course' : 'lesson'
+}
+
+const scrollToFormAfterPageRender = async () => {
+  await nextTick()
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      scrollToForm(getRouteFormType(), 'smooth')
+    }, 300)
+  })
+}
+
+const scrollToForm = async (type = 'lesson', behavior = 'smooth') => {
+  activeFormType.value = type
+
+  await nextTick()
+
+  formSectionRef.value?.scrollIntoView({
+    behavior,
+    block: 'start',
+  })
+}
+
+watch(
+  () => route.query.form,
+  (formType) => {
+    if (formType === 'lesson' || formType === 'course') {
+      activeFormType.value = formType
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  if (route.hash === '#app-form') {
+    scrollToFormAfterPageRender()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -392,6 +434,7 @@ const activeFormType = ref('lesson')
   }
 
   &__form {
+    scroll-margin-top: 64px;
     background-color: var(--hint-of-green);
     padding: 80px 0;
 

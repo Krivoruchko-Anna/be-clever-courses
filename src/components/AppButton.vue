@@ -1,5 +1,6 @@
 <template>
-  <button
+  <component
+    :is="link ? 'a' : 'button'"
     class="app-button"
     :class="{
       '--green': type === 'green',
@@ -7,16 +8,17 @@
       '--orange-outline': type === 'orange-outline',
       '--green-outline': type === 'green-outline',
     }"
+    :href="link || undefined"
+    :target="link ? '_blank' : undefined"
+    :rel="link ? 'noopener noreferrer' : undefined"
+    :type="link ? undefined : 'button'"
   >
     <span class="app-button__wrapper">
-      <span v-if="!link">{{ text }}</span>
-      <a v-else :href="link" target="_blank">
-        <span>{{ text }}</span>
-      </a>
+      <span>{{ text }}</span>
     </span>
 
     <img v-if="icon" :src="`/icons/${icon}`" alt="Icon" class="app-button__icon" />
-  </button>
+  </component>
 </template>
 
 <script setup>
@@ -48,6 +50,7 @@ defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   max-width: 304px;
   height: v-bind(height);
   padding: 8px 30px;

@@ -35,6 +35,10 @@ const router = createRouter({
     },
   ],
   scrollBehavior(to) {
+    if (to.hash === '#app-form') {
+      return false
+    }
+
     if (to.hash) {
       return {
         el: to.hash,
