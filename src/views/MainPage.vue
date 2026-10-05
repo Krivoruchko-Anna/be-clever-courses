@@ -3,12 +3,15 @@
     <AppHeader />
     <main class="main">
       <section class="main__promo">
-        <img src="/images/main.png" alt="group-photo" class="main__promo-img" />
+        <picture>
+          <source srcset="/images/main__mobile.webp" media="(max-width: 660px)" />
+          <img src="/images/main.webp" alt="group-photo" class="main__promo-img" />
+        </picture>
         <div class="container">
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
             <br />
-            <span>по системе смарт-клуба «Be Clever»</span>
+            <span class="main__promo-smart">по системе смарт-клуба «Be&nbspClever»</span>
           </h1>
 
           <div class="main__promo-description">
@@ -24,24 +27,27 @@
           </div>
 
           <div class="main__promo-buttons">
-            <a href="#app-form" @click="activeFormType = 'lesson'">
-              <AppButton text="Получить пробный урок" />
-            </a>
-            <a href="#app-form" @click="activeFormType = 'course'">
-              <AppButton text="Приобрести годовой курс для детей 3-5 лет" type="orange" />
-            </a>
+            <AppButton text="Получить пробный урок" height="56px" @click="scrollToForm('lesson')" />
+            <AppButton
+              text="Приобрести годовой курс для детей 3-5 лет"
+              height="56px"
+              type="orange"
+              @click="scrollToForm('course')"
+            />
           </div>
         </div>
       </section>
 
-      <section class="main__teacher-bg">
+      <section class="main__teacher">
         <MainTeacher />
       </section>
 
-      <section class="main__products">
-        <h2 class="main-title">Готовые решения для педагогов</h2>
-        <div class="products__list">
-          <ProductCard v-for="(product, index) in productCards" :key="index" :product="product" />
+      <section class="container">
+        <div class="main__products">
+          <h2 class="main-title">Готовые решения для педагогов</h2>
+          <div class="products__list">
+            <ProductCard v-for="(product, index) in productCards" :key="index" :product="product" />
+          </div>
         </div>
       </section>
 
@@ -73,23 +79,23 @@
         </div>
       </section>
 
-      <section class="main__form" id="app-form">
+      <section ref="formSectionRef" class="main__form" id="app-form">
         <div class="container">
           <AppForm v-model="activeFormType" />
         </div>
       </section>
 
-      <section class="main__contacts">
+      <section class="main__contacts" id="contacts">
         <AppContacts class="container" />
       </section>
-
-      <AppFooter class="main__footer" />
     </main>
+    <AppFooter class="main__footer" />
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import AppHeader from '../components/AppHeader.vue'
 import AppButton from '../components/AppButton.vue'
 import ProductCard from '@/components/ProductCard.vue'
@@ -100,6 +106,8 @@ import AppForm from '@/components/AppForm.vue'
 import AppContacts from '@/components/AppContacts.vue'
 import AppFooter from '@/components/AppFooter.vue'
 
+const route = useRoute()
+
 const digits = [
   { title: 'Учеников', value: '500+' },
   { title: 'Лет смарт-клубу', value: '5+' },
@@ -108,17 +116,17 @@ const digits = [
 
 const productCards = ref([
   {
-    title: 'Авторские курсы для детей 3-5 лет',
+    title: 'Авторский курс для детей 3-5 лет',
     icon: 'product_learn',
     description: 'Выстройте свою эффективную работу с готовым годовым курсом Be Clever',
-    image: 'product_1.png',
-    link: '',
+    image: 'product_1.webp',
+    link: 'courses',
   },
   {
     title: 'Авторские учебные материалы',
     icon: 'product_book',
     description: 'Ресурсы, которые сделают изучение английского языка увлекательным и эффективным',
-    image: 'product_2.png',
+    image: 'product_2.webp',
     link: '',
   },
   {
@@ -126,7 +134,7 @@ const productCards = ref([
     icon: 'product_video',
     description:
       'Индивидуальная поддержка и разбор ваших вопросов по обучению детей английскому языку с учётом их возраста и особенностей.',
-    image: 'product_3.png',
+    image: 'product_3.webp',
     link: '',
   },
   {
@@ -134,7 +142,7 @@ const productCards = ref([
     icon: 'product_folders',
     description:
       'Получите пакет всех необходимых образовательных документов для вашего детского центра РБ',
-    image: 'product_4.png',
+    image: 'product_4.webp',
     link: '',
   },
 ])
@@ -186,10 +194,54 @@ const questionsList = ref([
 ])
 
 const activeFormType = ref('lesson')
+const formSectionRef = ref(null)
+
+const getRouteFormType = () => {
+  return route.query.form === 'course' ? 'course' : 'lesson'
+}
+
+const scrollToFormAfterPageRender = async () => {
+  await nextTick()
+
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      scrollToForm(getRouteFormType(), 'smooth')
+    }, 300)
+  })
+}
+
+const scrollToForm = async (type = 'lesson', behavior = 'smooth') => {
+  activeFormType.value = type
+
+  await nextTick()
+
+  formSectionRef.value?.scrollIntoView({
+    behavior,
+    block: 'start',
+  })
+}
+
+watch(
+  () => route.query.form,
+  (formType) => {
+    if (formType === 'lesson' || formType === 'course') {
+      activeFormType.value = formType
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  if (route.hash === '#app-form') {
+    scrollToFormAfterPageRender()
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .main {
+  padding-top: 64px;
+
   &__promo-wrapper {
     padding: 32px 80px 80px 100px;
   }
@@ -203,7 +255,7 @@ const activeFormType = ref('lesson')
   }
 
   &__promo-title {
-    color: var(--killarney);
+    color: var(--tundora);
     font-size: 30px;
     font-weight: 800;
 
@@ -216,11 +268,16 @@ const activeFormType = ref('lesson')
     }
   }
 
+  &__promo-smart {
+    color: var(--hippi-green);
+  }
+
   &__promo-description {
     width: 580px;
     color: var(--dark-gray);
-    font-size: 16px;
-    line-height: 22px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 26px;
 
     @media (max-width: 900px) {
       max-width: 100%;
@@ -234,8 +291,8 @@ const activeFormType = ref('lesson')
     margin-top: 38px;
 
     .digit-value {
-      color: var(--killarney);
-      font-size: 40px;
+      color: var(--hippi-green);
+      font-size: 34px;
       font-weight: 800;
 
       @media (max-width: 1200px) {
@@ -252,10 +309,11 @@ const activeFormType = ref('lesson')
     }
 
     .digit-title {
-      color: var(--dark-gray);
+      color: var(--tundora);
       font-size: 16px;
+      text-align: center;
 
-      @media (max-width: 400px) {
+      @media (max-width: 600px) {
         font-size: 14px;
       }
     }
@@ -277,10 +335,6 @@ const activeFormType = ref('lesson')
     align-items: center;
 
     @media (max-width: 660px) {
-      width: fit-content;
-    }
-
-    @media (max-width: 400px) {
       max-width: 118px;
       min-width: 90px;
     }
@@ -308,12 +362,7 @@ const activeFormType = ref('lesson')
     }
   }
 
-  &__teacher-bg {
-    background-color: var(--hint-of-green);
-  }
-
   &__products {
-    max-width: 954px;
     margin: 60px auto 0 auto;
     display: flex;
     flex-direction: column;
@@ -325,14 +374,16 @@ const activeFormType = ref('lesson')
   }
 
   .products__list {
-    margin-top: 32px;
+    width: 100%;
+    margin: 32px auto 0;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 34px;
 
     @media (max-width: 1200px) {
       justify-content: center;
+      margin-top: 6px;
     }
   }
 
@@ -354,7 +405,7 @@ const activeFormType = ref('lesson')
     justify-content: center;
 
     @media (max-width: 1200px) {
-      gap: 40px;
+      gap: 20px;
       margin-top: 40px;
     }
   }
@@ -378,10 +429,12 @@ const activeFormType = ref('lesson')
     @media (max-width: 1200px) {
       flex-direction: column;
       margin-top: 20px;
+      gap: 20px;
     }
   }
 
   &__form {
+    scroll-margin-top: 64px;
     background-color: var(--hint-of-green);
     padding: 80px 0;
 
@@ -392,6 +445,10 @@ const activeFormType = ref('lesson')
 
   &__contacts {
     margin-top: 80px;
+
+    @media (max-width: 400px) {
+      margin-top: 46px;
+    }
   }
 
   &__footer {

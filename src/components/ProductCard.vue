@@ -14,7 +14,14 @@
         <p class="product-card__description">{{ product.description }}</p>
       </div>
 
-      <AppButton class="product-card__button" text="Подробнее" type="orange-outline" />
+      <RouterLink v-if="product.link" :to="product.link" class="product-card__button-link">
+        <AppButton
+          class="product-card__button"
+          text="Подробнее"
+          type="orange-outline"
+          height="34px"
+        />
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -24,8 +31,11 @@ import AppButton from '@/components/AppButton.vue'
 
 defineProps({
   product: {
-    type: Object,
-    required: true,
+    title: String,
+    icon: String,
+    description: String,
+    image: String,
+    link: String,
   },
 })
 </script>
@@ -36,9 +46,8 @@ defineProps({
   flex-direction: column;
   width: 460px;
   height: auto;
-  border-radius: 24px;
+  border-radius: 16px;
   transition: all 0.3s;
-  cursor: pointer;
   box-shadow: 0 4px 9px #0000001a;
 
   &:hover {
@@ -55,7 +64,7 @@ defineProps({
   }
 
   &__image {
-    border-radius: 24px 24px 0 0;
+    border-radius: 16px 16px 0 0;
   }
 
   &__title {
@@ -83,8 +92,14 @@ defineProps({
     margin-top: 10px;
   }
 
+  &__button-link {
+    align-self: center;
+    margin-top: 10px;
+    text-decoration: none;
+  }
+
   &__icon {
-    width: 36px;
+    width: 42px;
   }
 
   .app-button.--orange-outline {
@@ -95,10 +110,14 @@ defineProps({
 
   @media (max-width: 1200px) {
     width: 360px;
+
+    &__title {
+      font-size: 16px;
+    }
   }
 
   @media (max-width: 400px) {
-    width: 300px;
+    width: 100%;
   }
 }
 </style>

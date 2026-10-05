@@ -1,14 +1,24 @@
 <template>
-  <button
+  <component
+    :is="link ? 'a' : 'button'"
     class="app-button"
     :class="{
       '--green': type === 'green',
       '--orange': type === 'orange',
       '--orange-outline': type === 'orange-outline',
+      '--green-outline': type === 'green-outline',
     }"
+    :href="link || undefined"
+    :target="link ? '_blank' : undefined"
+    :rel="link ? 'noopener noreferrer' : undefined"
+    :type="link ? undefined : 'button'"
   >
-    <span>{{ text }}</span>
-  </button>
+    <span class="app-button__wrapper">
+      <span>{{ text }}</span>
+    </span>
+
+    <img v-if="icon" :src="`/icons/${icon}`" alt="Icon" class="app-button__icon" />
+  </component>
 </template>
 
 <script setup>
@@ -20,6 +30,18 @@ defineProps({
     type: String,
     default: 'green',
   },
+  height: {
+    type: String,
+    default: '52px',
+  },
+  link: {
+    type: String,
+    default: '',
+  },
+  icon: {
+    type: String,
+    default: '',
+  },
 })
 </script>
 
@@ -28,9 +50,11 @@ defineProps({
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
   max-width: 304px;
+  height: v-bind(height);
   padding: 8px 30px;
-  border-radius: 50px;
+  border-radius: 12px;
   border: none;
   color: var(--white);
   cursor: pointer;
@@ -40,8 +64,30 @@ defineProps({
   font-size: 16px;
   font-weight: bold;
 
+  a {
+    color: inherit;
+  }
+
+  &__icon {
+    position: relative;
+    right: -18px;
+    margin-left: 8px;
+    transition: all 0.2s;
+  }
+
   &.--green {
-    background-color: var(--japanese-laurel);
+    background-color: var(--la-palma);
+  }
+
+  &.--green-outline {
+    padding: 12px 30px;
+    background-color: transparent;
+    border: 2px solid var(--la-palma);
+    color: var(--la-palma);
+
+    @media (max-width: 1200px) {
+      padding: 8px 24px;
+    }
   }
 
   &.--orange {
@@ -53,17 +99,19 @@ defineProps({
     background-color: transparent;
     border: 2px solid var(--ecstasy);
     color: var(--ecstasy);
-    font-size: 18px;
 
     @media (max-width: 1200px) {
       padding: 8px 24px;
-      font-size: 14px;
     }
   }
 
   &:hover {
-    opacity: 0.8;
-    filter: saturate(200%);
+    border-radius: 18px;
+    filter: saturate(120%);
+
+    img {
+      transform: scale(0.9);
+    }
   }
 
   @media (max-width: 1200px) {
@@ -71,7 +119,7 @@ defineProps({
     max-width: 100%;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 600px) {
     font-size: 15px;
   }
 }

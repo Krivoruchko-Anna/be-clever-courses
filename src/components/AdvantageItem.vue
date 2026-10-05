@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="advantage-item"
-    :class="{ '--top': isTop, '--left': isLeft, '--right': isRight, '--bottom': isBottom }"
-  >
+  <div class="advantage-item" :class="positionClasses">
     <div class="advantage-item__header">
       <img class="advantage-item__icon" src="/icons/done.svg" alt="" />
       <div class="advantage-item__title">{{ advantage.title }}</div>
@@ -30,15 +27,26 @@ const props = defineProps({
   },
 })
 
-const isTop = computed(() => props.advantage.id === '1' || props.advantage.id === '2')
-const isLeft = computed(() => props.advantage.id === '1' || props.advantage.id === '3')
-const isRight = computed(() => props.advantage.id === '2' || props.advantage.id === '4')
-const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id === '4')
+const TOP_IDS = new Set(['1', '2'])
+const LEFT_IDS = new Set(['1', '3'])
+const RIGHT_IDS = new Set(['2', '4'])
+const BOTTOM_IDS = new Set(['3', '4'])
+
+const positionClasses = computed(() => {
+  const { id } = props.advantage
+
+  return {
+    '--top': TOP_IDS.has(id),
+    '--left': LEFT_IDS.has(id),
+    '--right': RIGHT_IDS.has(id),
+    '--bottom': BOTTOM_IDS.has(id),
+  }
+})
 </script>
 
 <style lang="scss" scoped>
 .advantage-item {
-  max-width: 440px;
+  max-width: 426px;
 
   &__header {
     display: flex;
@@ -47,33 +55,37 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
   }
 
   &__icon {
-    width: 30px;
+    width: 24px;
     height: auto;
 
     @media (max-width: 900px) {
-      width: 24px;
+      width: 20px;
     }
   }
 
   &__title {
     color: var(--japanese-laurel);
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
+
+    @media (max-width: 900px) {
+      font-size: 18px;
+    }
 
     @media (max-width: 660px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 
   &__body {
     margin-top: 14px;
-    margin-left: 42px;
+    margin-left: 36px;
     line-height: 24px;
     font-size: 16px;
     color: var(--tundora);
 
     @media (max-width: 1200px) {
-      margin-top: 4px;
+      margin-top: 10px;
     }
   }
 
@@ -93,22 +105,22 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
   }
 
   &.--top {
-    padding-bottom: 42px;
+    padding-bottom: 36px;
     border-bottom: 1px dashed var(--la-palma);
   }
 
   &.--left {
-    padding-right: 42px;
+    padding-right: 36px;
     border-right: 1px dashed var(--la-palma);
   }
 
   &.--right {
-    padding-left: 42px;
+    padding-left: 36px;
   }
 
   &.--bottom {
-    padding-top: 42px;
-    padding-bottom: 42px;
+    padding-top: 36px;
+    padding-bottom: 36px;
   }
 
   @media (max-width: 1200px) {
@@ -119,6 +131,10 @@ const isBottom = computed(() => props.advantage.id === '3' || props.advantage.id
       padding: 0;
       border: none;
     }
+  }
+
+  @media (max-width: 900px) {
+    max-width: 360px;
   }
 }
 </style>
