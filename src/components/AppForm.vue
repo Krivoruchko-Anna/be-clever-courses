@@ -103,26 +103,57 @@
       </div>
 
       <div v-if="showPaymentBlock" class="app-form__payment">
-        <div class="app-form__payment-title">Оплата через EPOS</div>
+        <div class="app-form__payment-title">Оплата через ЕРИП (EPOS)</div>
 
-        <template v-if="displayedPurchaseProduct?.eposInstruction">
-          <div class="app-form__payment-text">{{ displayedPurchaseProduct.eposInstruction }}</div>
-        </template>
+        <div v-if="paymentPhase === 'creating'" class="app-form__payment-text">
+          Счёт выставляется, пожалуйста, подождите…
+        </div>
 
-        <template v-else>
+        <div
+          v-else-if="paymentPhase === 'error'"
+          class="app-form__payment-text app-form__payment-text--error"
+        >
+          {{ paymentError }}
+        </div>
+
+        <template v-else-if="paymentPhase === 'awaiting'">
           <div class="app-form__payment-text">
-            Здесь будет отображаться ссылка, QR-код или инструкция для оплаты
+            Счёт <strong>№{{ paymentBill.billNumber }}</strong> на сумму
+            <strong>{{ formatAmount(paymentBill.amount, paymentBill.currency) }}</strong> выставлен в
+            систему ЕРИП.
+          </div>
+          <div class="app-form__payment-text">{{ paymentBill.instruction }}</div>
+          <div class="app-form__payment-status">
+            Ожидаем оплату — статус обновится на этой странице автоматически.
           </div>
         </template>
+
+        <div
+          v-else-if="paymentPhase === 'paid'"
+          class="app-form__payment-text app-form__payment-text--success"
+        >
+          Оплата получена! Доступ к курсу будет открыт на указанную почту.
+        </div>
+
+        <div v-else-if="paymentPhase === 'expired'" class="app-form__payment-text">
+          Мы перестали отслеживать оплату в реальном времени. Если счёт уже оплачен — подтверждение
+          придёт на почту, а доступ к курсу откроется автоматически.
+        </div>
+
+        <div v-else class="app-form__payment-text">
+          {{ displayedPurchaseProduct?.eposInstruction || 'Здесь появится инструкция по оплате' }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 import { findPromoCode, formatPrice, getFinalPriceValue } from '@/constants/promoCodes'
+import { formatAmount, useOrderPayment } from '@/composables/useOrderPayment'
+import { getProduct } from '@/api/client'
 
 const props = defineProps({
   modelValue: {
@@ -141,17 +172,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  courseProduct: {
-    type: Object,
-    default: () => ({
-      id: 'full-course',
-      title: 'Вся программа',
-      price: '1000 руб.',
-      priceValue: 1000,
-      period: '/ 9 месяцев',
-      eposInstruction: '',
-    }),
-  },
+    courseProduct: {
+      type: Object,
+      default: () => ({
+        id: 'full-course',
+        title: 'Вся программа',
+        price: '30 руб.', // запасная цена, актуальная подтягивается из БД по wooId
+        priceValue: 30,
+        period: '/ 9 месяцев',
+        wooId: 30, // id товара в WooCommerce (api.irinakovalenko.by)
+        eposInstruction: '',
+      }),
+    },
 })
 
 const emit = defineEmits(['update:modelValue', 'submit'])
@@ -170,6 +202,23 @@ const isSubmitted = ref(false)
 const submitMessage = ref('')
 const submittedFormType = ref('')
 const phoneError = ref('')
+
+const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
+
+// Цена курса на вкладке «Приобрести курс» — из БД, константа выше только запасная
+const dbCourseProduct = ref(null)
+
+onMounted(async () => {
+  const wooId = props.courseProduct?.wooId
+
+  if (!wooId) return
+
+  try {
+    dbCourseProduct.value = await getProduct(wooId)
+  } catch {
+    // бэкенд недоступен — показываем запасную цену
+  }
+})
 
 const belarusPhoneRegex = /^\+375\s?\(?(25|29|33|44)\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/
 
@@ -210,6 +259,14 @@ const displayedPurchaseProduct = computed(() => {
   }
 
   if (activeTab.value === 'course') {
+    if (dbCourseProduct.value?.price != null) {
+      return {
+        ...props.courseProduct,
+        price: formatPrice(Number(dbCourseProduct.value.price)),
+        priceValue: Number(dbCourseProduct.value.price),
+      }
+    }
+
     return props.courseProduct
   }
 
@@ -335,6 +392,16 @@ const handleSubmit = () => {
   }
 
   emit('submit', payload)
+
+  if (isPurchase.value) {
+    startPayment({
+      productId: preparedProduct?.wooId ?? null,
+      name: name.value,
+      phone: phone.value,
+      email: contact.value,
+      promoCode: promoCode.value,
+    })
+  }
 
   isSubmitted.value = true
   submitMessage.value = isPurchase.value
@@ -595,6 +662,22 @@ const handleSubmit = () => {
     color: var(--tundora);
     font-size: 15px;
     line-height: 22px;
+    text-align: center;
+
+    &.--error {
+      color: var(--error);
+    }
+
+    &.--success {
+      color: var(--hippi-green);
+    }
+  }
+
+  &__payment-status {
+    margin-top: 10px;
+    color: var(--dove-gray);
+    font-size: 13px;
+    font-weight: 600;
     text-align: center;
   }
 
