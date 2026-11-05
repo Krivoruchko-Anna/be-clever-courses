@@ -43,6 +43,7 @@ export const createEposOrder = (payload) =>
       email: payload.email,
       phone: payload.phone,
       promo_code: payload.promoCode || '',
+      pay_by: payload.payBy || 'erip', // 'erip' | 'card' — при 'card' в ответе будет webpay_form
     },
   })
 

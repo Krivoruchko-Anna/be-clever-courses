@@ -10,10 +10,29 @@ const POLL_SLOW_MS = 30000
 const POLL_FAST_PERIOD_MS = 2 * 60 * 1000
 const POLL_MAX_MS = 20 * 60 * 1000
 
+// Вставляем WebPay-форму (HTML с hidden-полями от бэкенда) и отправляем её:
+// покупатель уходит на платёжную страницу шлюза в той же вкладке.
+const submitWebpayForm = (html) => {
+  const container = document.createElement('div')
+  container.style.display = 'none'
+  container.innerHTML = html
+  document.body.appendChild(container)
+
+  const form = container.querySelector('form')
+
+  if (!form) {
+    container.remove()
+    throw new Error('Не удалось открыть страницу оплаты. Оплатите счёт по ЕРИП.')
+  }
+
+  form.submit()
+}
+
 /**
  * Жизненный цикл оплаты:
- * idle → creating (запрос к бэку) → awaiting (счёт выставлен, ждём ЕРИП) → paid
- *                                       ↘ error              awaiting → expired (перестали опрашивать)
+ * idle → creating → awaiting (ЕРИП) → paid
+ *       ↘ redirecting (карта: уход на шлюз)      awaiting → expired (перестали опрашивать)
+ *       ↘ error
  */
 export function useOrderPayment() {
   const paymentPhase = ref('idle')
@@ -72,7 +91,15 @@ export function useOrderPayment() {
     schedulePoll(POLL_FAST_MS)
   }
 
-  const startPayment = async ({ productId, name, email, phone, promoCode, quantity = 1 }) => {
+  const startPayment = async ({
+    productId,
+    name,
+    email,
+    phone,
+    promoCode,
+    quantity = 1,
+    payBy = 'erip',
+  }) => {
     stopPolling()
     paymentPhase.value = 'creating'
     paymentError.value = ''
@@ -86,7 +113,7 @@ export function useOrderPayment() {
     }
 
     try {
-      const data = await createEposOrder({ productId, name, email, phone, promoCode, quantity })
+      const data = await createEposOrder({ productId, name, email, phone, promoCode, quantity, payBy })
 
       if (!data.order_id || !data.order_key) {
         throw new Error('Некорректный ответ сервера. Попробуйте позже.')
@@ -100,6 +127,22 @@ export function useOrderPayment() {
         instruction: data.erip?.instruction || '',
         expiresDays: data.erip?.expires_days || 2,
       }
+
+      // Карта: счёт выставлен, уводим покупателя на шлюз
+      if (payBy === 'card' && data.webpay_form) {
+        paymentPhase.value = 'redirecting'
+        submitWebpayForm(data.webpay_form)
+        return
+      }
+
+      // Карта недоступна (шлюз не ответил) — показываем ЕРИП как запасной путь
+      if (payBy === 'card' && data.webpay_error) {
+        paymentBill.value = {
+          ...paymentBill.value,
+          instruction: `${paymentBill.value.instruction} Оплата картой временно недоступна — оплатите счёт по ЕРИП.`,
+        }
+      }
+
       paymentPhase.value = 'awaiting'
       startPolling()
     } catch (error) {

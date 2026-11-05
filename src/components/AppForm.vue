@@ -72,6 +72,25 @@
         </div>
       </div>
 
+      <div v-if="isPurchase" class="app-form__pay-method">
+        <button
+          type="button"
+          class="app-form__pay-method-btn"
+          :class="{ '--active': paymentMethod === 'erip' }"
+          @click="paymentMethod = 'erip'"
+        >
+          ЕРИП — оплата в банке
+        </button>
+        <button
+          type="button"
+          class="app-form__pay-method-btn"
+          :class="{ '--active': paymentMethod === 'card' }"
+          @click="paymentMethod = 'card'"
+        >
+          Банковская карта
+        </button>
+      </div>
+
       <div class="app-form__footer">
         <div class="app-form__agreement">
           <input v-model="isAgreed" class="app-form__checkbox" type="checkbox" />
@@ -144,7 +163,11 @@
           v-else-if="paymentPhase === 'paid'"
           class="app-form__payment-text app-form__payment-text--success"
         >
-          Оплата получена! Доступ к курсу будет открыт на указанную почту.
+          Оплата получена! Доступ к курсу будет отправлен на указанную почту.
+        </div>
+
+        <div v-else-if="paymentPhase === 'redirecting'" class="app-form__payment-text">
+          Счёт выставлен. Перенаправляем на страницу оплаты картой…
         </div>
 
         <div v-else-if="paymentPhase === 'expired'" class="app-form__payment-text">
@@ -217,6 +240,8 @@ const phoneError = ref('')
 const emailError = ref('')
 
 const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
+
+const paymentMethod = ref('erip') // 'erip' | 'card' — выбранный способ оплаты
 
 // id бесплатного товара «Пробный урок» в WooCommerce (цена 0, категория «Продажа на сайте»)
 const FREE_LESSON_WOO_ID = 37
@@ -457,6 +482,7 @@ const handleSubmit = () => {
       phone: phone.value,
       email: contact.value,
       promoCode: promoCode.value,
+      payBy: paymentMethod.value,
     })
     submitMessage.value = 'Заявка сформирована. Ниже показан блок для оплаты.'
   } else {
@@ -649,6 +675,36 @@ const handleSubmit = () => {
     color: var(--error);
     font-size: 13px;
     line-height: 18px;
+  }
+
+  &__pay-method {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  &__pay-method-btn {
+    flex: 1;
+    padding: 14px 12px;
+    border: 2px solid var(--mercury);
+    border-radius: 12px;
+    background-color: var(--white);
+    color: var(--gray);
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &.--active {
+      border-color: var(--la-palma);
+      color: var(--hippi-green);
+      background-color: var(--hint-of-green);
+    }
+
+    &:hover:not(.--active) {
+      border-color: var(--satin-linen);
+    }
   }
 
   &__footer {

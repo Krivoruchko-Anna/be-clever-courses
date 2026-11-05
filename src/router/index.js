@@ -4,6 +4,7 @@ import CoursesPage from '@/views/CoursesPage.vue'
 import ContactsPage from '@/views/ContactsPage.vue'
 import PublicOfferPage from '@/views/PublicOfferPage.vue'
 import PersonalDataPolicyPage from '@/views/PersonalDataPolicyPage.vue'
+import PayResultPage from '@/views/PayResultPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/personal-data-policy',
       name: 'personal-data-policy',
       component: PersonalDataPolicyPage,
+    },
+    {
+      path: '/pay-result',
+      name: 'PayResultPage',
+      component: PayResultPage,
     },
   ],
   scrollBehavior(to) {
