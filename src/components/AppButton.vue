@@ -105,13 +105,18 @@ defineProps({
     }
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-radius: 18px;
     filter: saturate(120%);
 
     img {
       transform: scale(0.9);
     }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   @media (max-width: 1200px) {

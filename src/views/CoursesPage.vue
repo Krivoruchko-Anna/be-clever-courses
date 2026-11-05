@@ -207,14 +207,13 @@
         model-value="course"
         :product="selectedProduct"
         :initial-promo="selectedProductPromoCode"
-        @submit="handlePurchaseSubmit"
       />
     </AppModal>
   </div>
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref, computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeader from '@/components/AppHeader.vue'
 import AppFooter from '@/components/AppFooter.vue'
@@ -223,6 +222,8 @@ import AppForm from '@/components/AppForm.vue'
 import AppModal from '@/components/AppModal.vue'
 import CourseInfoCard from '@/components/CourseInfoCard.vue'
 import CoursePricingCard from '@/components/CoursePricingCard.vue'
+import { getProduct } from '@/api/client'
+import { formatPrice } from '@/constants/promoCodes'
 
 const router = useRouter()
 
@@ -369,9 +370,10 @@ const audienceItems = [
   },
 ]
 
-const pricingCards = [
+const pricingCards = reactive([
   {
     id: 'month',
+    wooId: 14, // id товара в WooCommerce (api.irinakovalenko.by)
     title: '1 месяц',
     badge: '',
     price: '100 руб.',
@@ -389,10 +391,11 @@ const pricingCards = [
   },
   {
     id: 'full-course',
+    wooId: 30, // id товара в WooCommerce; цена подтягивается из БД (см. onMounted ниже)
     title: 'Вся программа',
     badge: 'Выгоднее',
-    price: '1000 руб.',
-    priceValue: 1000,
+    price: '30 руб.', // запасная цена, если бэкенд недоступен
+    priceValue: 30,
     period: '/ 9 месяцев',
     features: ['72 готовых урока', 'Полный комплект материалов сразу'],
     buttonText: 'Купить целиком',
@@ -400,7 +403,25 @@ const pricingCards = [
     highlighted: true,
     eposInstruction: '',
   },
-]
+])
+
+// Актуальная цена полного курса — из БД WooCommerce, чтобы витрина не расходилась со счётом
+onMounted(async () => {
+  const fullCourse = pricingCards.find((card) => card.id === 'full-course')
+
+  if (!fullCourse?.wooId) return
+
+  try {
+    const product = await getProduct(fullCourse.wooId)
+
+    if (product.price != null) {
+      fullCourse.price = formatPrice(Number(product.price))
+      fullCourse.priceValue = Number(product.price)
+    }
+  } catch {
+    // бэкенд недоступен — остаёмся на запасной цене из константы
+  }
+})
 
 const promoCode = ref('')
 const selectedProduct = ref(null)
@@ -416,10 +437,6 @@ const closePurchaseModal = () => {
   selectedProduct.value = null
   selectedProductPromoCode.value = ''
   document.body.style.overflow = ''
-}
-
-const handlePurchaseSubmit = (payload) => {
-  console.log('purchase payload', payload) // TODO: отправка заявки заказчику / backend
 }
 
 onBeforeUnmount(() => {

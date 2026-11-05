@@ -56,7 +56,14 @@
 
         <div class="app-form__field">
           <div class="app-form__label">{{ contactLabel }}</div>
-          <input v-model="contact" class="app-form__input" :placeholder="contactPlaceholder" />
+          <input
+            v-model="contact"
+            class="app-form__input"
+            :class="{ '--error': emailError }"
+            :placeholder="contactPlaceholder"
+            @input="emailError = ''"
+          />
+          <div v-if="emailError" class="app-form__field-error">{{ emailError }}</div>
         </div>
 
         <div v-if="isPurchase" class="app-form__field">
@@ -94,35 +101,71 @@
           class="app-form__button"
           :text="buttonText"
           type="orange"
+          :disabled="paymentPhase === 'creating' || leadPhase === 'sending'"
           @click="handleSubmit"
         />
       </div>
 
-      <div v-if="visibleSubmitMessage" class="app-form__message">
+      <div
+        v-if="visibleSubmitMessage"
+        class="app-form__message"
+        :class="{ '--error': leadPhase === 'error' }"
+      >
         {{ visibleSubmitMessage }}
       </div>
 
       <div v-if="showPaymentBlock" class="app-form__payment">
-        <div class="app-form__payment-title">Оплата через EPOS</div>
+        <div class="app-form__payment-title">Оплата через ЕРИП (EPOS)</div>
 
-        <template v-if="displayedPurchaseProduct?.eposInstruction">
-          <div class="app-form__payment-text">{{ displayedPurchaseProduct.eposInstruction }}</div>
-        </template>
+        <div v-if="paymentPhase === 'creating'" class="app-form__payment-text">
+          Счёт выставляется, пожалуйста, подождите…
+        </div>
 
-        <template v-else>
+        <div
+          v-else-if="paymentPhase === 'error'"
+          class="app-form__payment-text app-form__payment-text--error"
+        >
+          {{ paymentError }}
+        </div>
+
+        <template v-else-if="paymentPhase === 'awaiting'">
           <div class="app-form__payment-text">
-            Здесь будет отображаться ссылка, QR-код или инструкция для оплаты
+            Счёт <strong>№{{ paymentBill.billNumber }}</strong> на сумму
+            <strong>{{ formatAmount(paymentBill.amount, paymentBill.currency) }}</strong> выставлен в
+            систему ЕРИП.
+          </div>
+          <div class="app-form__payment-text">{{ paymentBill.instruction }}</div>
+          <div class="app-form__payment-status">
+            Ожидаем оплату — статус обновится на этой странице автоматически.
           </div>
         </template>
+
+        <div
+          v-else-if="paymentPhase === 'paid'"
+          class="app-form__payment-text app-form__payment-text--success"
+        >
+          Оплата получена! Доступ к курсу будет открыт на указанную почту.
+        </div>
+
+        <div v-else-if="paymentPhase === 'expired'" class="app-form__payment-text">
+          Мы перестали отслеживать оплату в реальном времени. Если счёт уже оплачен — подтверждение
+          придёт на почту, а доступ к курсу откроется автоматически.
+        </div>
+
+        <div v-else class="app-form__payment-text">
+          {{ displayedPurchaseProduct?.eposInstruction || 'Здесь появится инструкция по оплате' }}
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 import { findPromoCode, formatPrice, getFinalPriceValue } from '@/constants/promoCodes'
+import { formatAmount, useOrderPayment } from '@/composables/useOrderPayment'
+import { createLead, getProduct } from '@/api/client'
 
 const props = defineProps({
   modelValue: {
@@ -146,9 +189,10 @@ const props = defineProps({
     default: () => ({
       id: 'full-course',
       title: 'Вся программа',
-      price: '1000 руб.',
-      priceValue: 1000,
+      price: '30 руб.', // запасная цена, актуальная подтягивается из БД по wooId
+      priceValue: 30,
       period: '/ 9 месяцев',
+      wooId: 30, // id товара в WooCommerce (api.irinakovalenko.by)
       eposInstruction: '',
     }),
   },
@@ -170,6 +214,54 @@ const isSubmitted = ref(false)
 const submitMessage = ref('')
 const submittedFormType = ref('')
 const phoneError = ref('')
+const emailError = ref('')
+
+const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
+
+// id бесплатного товара «Пробный урок» в WooCommerce (цена 0, категория «Продажа на сайте»)
+const FREE_LESSON_WOO_ID = 37
+
+const leadPhase = ref('idle') // idle | sending | done | error
+
+const sendLead = async ({ name: leadName, phone: leadPhone, contact: leadContact }) => {
+  if (!FREE_LESSON_WOO_ID) {
+    leadPhase.value = 'error'
+    submitMessage.value = 'Отправка заявок временно недоступна. Напишите нам в Telegram, пожалуйста.'
+    return
+  }
+
+  leadPhase.value = 'sending'
+
+  try {
+    await createLead({
+      productId: FREE_LESSON_WOO_ID,
+      name: leadName,
+      phone: leadPhone,
+      contact: leadContact,
+    })
+
+    leadPhase.value = 'done'
+    submitMessage.value = 'Спасибо! Мы отправим пример урока вам в телеграм.'
+  } catch (error) {
+    leadPhase.value = 'error'
+    submitMessage.value = error.message || 'Не удалось отправить заявку. Попробуйте позже.'
+  }
+}
+
+// Цена курса на вкладке «Приобрести курс» — из БД, константа выше только запасная
+const dbCourseProduct = ref(null)
+
+onMounted(async () => {
+  const wooId = props.courseProduct?.wooId
+
+  if (!wooId) return
+
+  try {
+    dbCourseProduct.value = await getProduct(wooId)
+  } catch {
+    // бэкенд недоступен — показываем запасную цену
+  }
+})
 
 const belarusPhoneRegex = /^\+375\s?\(?(25|29|33|44)\)?\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/
 
@@ -186,6 +278,10 @@ const normalizePhone = (value) => {
 const isBelarusPhoneValid = (value) => {
   return belarusPhoneRegex.test(normalizePhone(value))
 }
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const isEmailValid = (value) => emailRegex.test(value.trim())
 
 watch(
   () => props.initialPromo,
@@ -210,6 +306,14 @@ const displayedPurchaseProduct = computed(() => {
   }
 
   if (activeTab.value === 'course') {
+    if (dbCourseProduct.value?.price != null) {
+      return {
+        ...props.courseProduct,
+        price: formatPrice(Number(dbCourseProduct.value.price)),
+        priceValue: Number(dbCourseProduct.value.price),
+      }
+    }
+
     return props.courseProduct
   }
 
@@ -292,10 +396,14 @@ const clearFormFields = () => {
   promoCode.value = ''
   isAgreed.value = false
   phoneError.value = ''
+  emailError.value = ''
 }
 
 const handleSubmit = () => {
+  if (paymentPhase.value === 'creating' || leadPhase.value === 'sending') return
+
   phoneError.value = ''
+  emailError.value = ''
   submittedFormType.value = currentFormType.value
   isSubmitted.value = false
 
@@ -307,6 +415,12 @@ const handleSubmit = () => {
   if (!isBelarusPhoneValid(phone.value)) {
     phoneError.value = 'Введите номер телефона в формате +375 XX XXX XX XX'
     submitMessage.value = 'Пожалуйста, проверьте номер телефона.'
+    return
+  }
+
+  if (isPurchase.value && !isEmailValid(contact.value)) {
+    emailError.value = 'Введите корректный email, например example@mail.com'
+    submitMessage.value = 'Пожалуйста, проверьте email.'
     return
   }
 
@@ -336,10 +450,21 @@ const handleSubmit = () => {
 
   emit('submit', payload)
 
+  if (isPurchase.value) {
+    startPayment({
+      productId: preparedProduct?.wooId ?? null,
+      name: name.value,
+      phone: phone.value,
+      email: contact.value,
+      promoCode: promoCode.value,
+    })
+    submitMessage.value = 'Заявка сформирована. Ниже показан блок для оплаты.'
+  } else {
+    submitMessage.value = 'Отправляем заявку…'
+    sendLead({ name: name.value, phone: phone.value, contact: contact.value })
+  }
+
   isSubmitted.value = true
-  submitMessage.value = isPurchase.value
-    ? 'Заявка сформирована. Ниже показан блок для оплаты.'
-    : 'Спасибо! Мы свяжемся с вами.'
 
   clearFormFields()
 }
@@ -573,6 +698,10 @@ const handleSubmit = () => {
     font-size: 14px;
     font-weight: 700;
     text-align: center;
+
+    &.--error {
+      color: var(--error);
+    }
   }
 
   &__payment {
@@ -595,6 +724,22 @@ const handleSubmit = () => {
     color: var(--tundora);
     font-size: 15px;
     line-height: 22px;
+    text-align: center;
+
+    &.--error {
+      color: var(--error);
+    }
+
+    &.--success {
+      color: var(--hippi-green);
+    }
+  }
+
+  &__payment-status {
+    margin-top: 10px;
+    color: var(--dove-gray);
+    font-size: 13px;
+    font-weight: 600;
     text-align: center;
   }
 
