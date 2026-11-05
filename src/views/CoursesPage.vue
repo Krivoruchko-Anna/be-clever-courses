@@ -207,7 +207,6 @@
         model-value="course"
         :product="selectedProduct"
         :initial-promo="selectedProductPromoCode"
-        @submit="handlePurchaseSubmit"
       />
     </AppModal>
   </div>
@@ -438,12 +437,6 @@ const closePurchaseModal = () => {
   selectedProduct.value = null
   selectedProductPromoCode.value = ''
   document.body.style.overflow = ''
-}
-
-// Заказ и счёт EPOS создаются внутри AppForm (composable useOrderPayment).
-// Этот обработчик оставлен для будущей отправки заявки в CRM.
-const handlePurchaseSubmit = (payload) => {
-  console.log('purchase payload', payload)
 }
 
 onBeforeUnmount(() => {

@@ -1,11 +1,24 @@
 const API_URL = import.meta.env.VITE_API_URL || 'https://api.irinakovalenko.by'
 
-const request = async (path, { method = 'GET', body } = {}) => {
-  const response = await fetch(`${API_URL}${path}`, {
-    method,
-    headers: body ? { 'Content-Type': 'application/json' } : undefined,
-    body: body ? JSON.stringify(body) : undefined,
-  })
+const DEFAULT_TIMEOUT_MS = 15000
+
+const request = async (path, { method = 'GET', body, timeoutMs = DEFAULT_TIMEOUT_MS } = {}) => {
+  let response
+
+  try {
+    response = await fetch(`${API_URL}${path}`, {
+      method,
+      headers: body ? { 'Content-Type': 'application/json' } : undefined,
+      body: body ? JSON.stringify(body) : undefined,
+      signal: AbortSignal.timeout(timeoutMs),
+    })
+  } catch (error) {
+    if (error.name === 'TimeoutError' || error.name === 'AbortError') {
+      throw new Error('Сервер не ответил за отведённое время. Попробуйте ещё раз.')
+    }
+
+    throw error
+  }
 
   const data = await response.json().catch(() => ({}))
 
@@ -38,6 +51,22 @@ export const createEposOrder = (payload) =>
  */
 export const getOrderStatus = (orderId, orderKey) =>
   request(`/wp-json/ik/v1/order-status?order=${orderId}&key=${encodeURIComponent(orderKey)}`)
+
+/**
+ * Заявка на бесплатный урок: создаёт бесплатный заказ (без счёта EPOS).
+ * Контакт (ник в Telegram) сохраняется в мета заказа.
+ */
+export const createLead = ({ productId, name, phone, contact }) =>
+  request('/wp-json/ik/v1/orders', {
+    method: 'POST',
+    body: {
+      product_id: productId,
+      quantity: 1,
+      name,
+      phone,
+      tg_nick: contact || '',
+    },
+  })
 
 /**
  * Товар из БД WooCommerce: { id, name, price, regular_price, sale_price, currency, in_stock }.

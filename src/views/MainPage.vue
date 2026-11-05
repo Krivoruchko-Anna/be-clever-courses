@@ -11,7 +11,7 @@
           <h1 class="main__promo-title">
             <span>Готовые уроки и материалы</span>
             <br />
-            <span class="main__promo-smart">по системе смарт-клуба «Be&nbspClever»</span>
+            <span class="main__promo-smart">по системе смарт-клуба «Be&nbsp;Clever»</span>
           </h1>
 
           <div class="main__promo-description">

@@ -123,13 +123,6 @@ const props = defineProps({
   },
 })
 
-const promoCodes = [
-  {
-    code: 'TEST10',
-    discountPercent: 10,
-  },
-]
-
 const promoCode = ref('')
 const appliedPromoCode = ref(null)
 const isPromoCodeVisible = ref(false)
@@ -138,10 +131,6 @@ const promoStatus = ref('idle')
 const normalizedPromoCode = computed(() => promoCode.value.trim().toUpperCase())
 const isPromoApplied = computed(() => Boolean(appliedPromoCode.value))
 const promoCodeButtonText = computed(() => (isPromoApplied.value ? 'Отменить' : 'Применить'))
-
-const discountAmount = computed(() => {
-  return getDiscountAmount(props.priceValue, appliedPromoCode.value)
-})
 
 const finalPrice = computed(() => {
   return getFinalPriceValue(props.priceValue, appliedPromoCode.value)

@@ -56,7 +56,14 @@
 
         <div class="app-form__field">
           <div class="app-form__label">{{ contactLabel }}</div>
-          <input v-model="contact" class="app-form__input" :placeholder="contactPlaceholder" />
+          <input
+            v-model="contact"
+            class="app-form__input"
+            :class="{ '--error': emailError }"
+            :placeholder="contactPlaceholder"
+            @input="emailError = ''"
+          />
+          <div v-if="emailError" class="app-form__field-error">{{ emailError }}</div>
         </div>
 
         <div v-if="isPurchase" class="app-form__field">
@@ -94,11 +101,16 @@
           class="app-form__button"
           :text="buttonText"
           type="orange"
+          :disabled="paymentPhase === 'creating' || leadPhase === 'sending'"
           @click="handleSubmit"
         />
       </div>
 
-      <div v-if="visibleSubmitMessage" class="app-form__message">
+      <div
+        v-if="visibleSubmitMessage"
+        class="app-form__message"
+        :class="{ '--error': leadPhase === 'error' }"
+      >
         {{ visibleSubmitMessage }}
       </div>
 
@@ -153,7 +165,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 import { findPromoCode, formatPrice, getFinalPriceValue } from '@/constants/promoCodes'
 import { formatAmount, useOrderPayment } from '@/composables/useOrderPayment'
-import { getProduct } from '@/api/client'
+import { createLead, getProduct } from '@/api/client'
 
 const props = defineProps({
   modelValue: {
@@ -172,18 +184,18 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-    courseProduct: {
-      type: Object,
-      default: () => ({
-        id: 'full-course',
-        title: 'Вся программа',
-        price: '30 руб.', // запасная цена, актуальная подтягивается из БД по wooId
-        priceValue: 30,
-        period: '/ 9 месяцев',
-        wooId: 30, // id товара в WooCommerce (api.irinakovalenko.by)
-        eposInstruction: '',
-      }),
-    },
+  courseProduct: {
+    type: Object,
+    default: () => ({
+      id: 'full-course',
+      title: 'Вся программа',
+      price: '30 руб.', // запасная цена, актуальная подтягивается из БД по wooId
+      priceValue: 30,
+      period: '/ 9 месяцев',
+      wooId: 30, // id товара в WooCommerce (api.irinakovalenko.by)
+      eposInstruction: '',
+    }),
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'submit'])
@@ -202,8 +214,39 @@ const isSubmitted = ref(false)
 const submitMessage = ref('')
 const submittedFormType = ref('')
 const phoneError = ref('')
+const emailError = ref('')
 
 const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
+
+// id бесплатного товара «Пробный урок» в WooCommerce (цена 0, категория «Продажа на сайте»)
+const FREE_LESSON_WOO_ID = 37
+
+const leadPhase = ref('idle') // idle | sending | done | error
+
+const sendLead = async ({ name: leadName, phone: leadPhone, contact: leadContact }) => {
+  if (!FREE_LESSON_WOO_ID) {
+    leadPhase.value = 'error'
+    submitMessage.value = 'Отправка заявок временно недоступна. Напишите нам в Telegram, пожалуйста.'
+    return
+  }
+
+  leadPhase.value = 'sending'
+
+  try {
+    await createLead({
+      productId: FREE_LESSON_WOO_ID,
+      name: leadName,
+      phone: leadPhone,
+      contact: leadContact,
+    })
+
+    leadPhase.value = 'done'
+    submitMessage.value = 'Спасибо! Мы отправим пример урока вам в телеграм.'
+  } catch (error) {
+    leadPhase.value = 'error'
+    submitMessage.value = error.message || 'Не удалось отправить заявку. Попробуйте позже.'
+  }
+}
 
 // Цена курса на вкладке «Приобрести курс» — из БД, константа выше только запасная
 const dbCourseProduct = ref(null)
@@ -235,6 +278,10 @@ const normalizePhone = (value) => {
 const isBelarusPhoneValid = (value) => {
   return belarusPhoneRegex.test(normalizePhone(value))
 }
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const isEmailValid = (value) => emailRegex.test(value.trim())
 
 watch(
   () => props.initialPromo,
@@ -349,10 +396,14 @@ const clearFormFields = () => {
   promoCode.value = ''
   isAgreed.value = false
   phoneError.value = ''
+  emailError.value = ''
 }
 
 const handleSubmit = () => {
+  if (paymentPhase.value === 'creating' || leadPhase.value === 'sending') return
+
   phoneError.value = ''
+  emailError.value = ''
   submittedFormType.value = currentFormType.value
   isSubmitted.value = false
 
@@ -364,6 +415,12 @@ const handleSubmit = () => {
   if (!isBelarusPhoneValid(phone.value)) {
     phoneError.value = 'Введите номер телефона в формате +375 XX XXX XX XX'
     submitMessage.value = 'Пожалуйста, проверьте номер телефона.'
+    return
+  }
+
+  if (isPurchase.value && !isEmailValid(contact.value)) {
+    emailError.value = 'Введите корректный email, например example@mail.com'
+    submitMessage.value = 'Пожалуйста, проверьте email.'
     return
   }
 
@@ -401,12 +458,13 @@ const handleSubmit = () => {
       email: contact.value,
       promoCode: promoCode.value,
     })
+    submitMessage.value = 'Заявка сформирована. Ниже показан блок для оплаты.'
+  } else {
+    submitMessage.value = 'Отправляем заявку…'
+    sendLead({ name: name.value, phone: phone.value, contact: contact.value })
   }
 
   isSubmitted.value = true
-  submitMessage.value = isPurchase.value
-    ? 'Заявка сформирована. Ниже показан блок для оплаты.'
-    : 'Спасибо! Мы свяжемся с вами.'
 
   clearFormFields()
 }
@@ -640,6 +698,10 @@ const handleSubmit = () => {
     font-size: 14px;
     font-weight: 700;
     text-align: center;
+
+    &.--error {
+      color: var(--error);
+    }
   }
 
   &__payment {

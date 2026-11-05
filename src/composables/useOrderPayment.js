@@ -88,6 +88,10 @@ export function useOrderPayment() {
     try {
       const data = await createEposOrder({ productId, name, email, phone, promoCode, quantity })
 
+      if (!data.order_id || !data.order_key) {
+        throw new Error('Некорректный ответ сервера. Попробуйте позже.')
+      }
+
       order.value = { id: data.order_id, key: data.order_key }
       paymentBill.value = {
         billNumber: data.bill_number,
