@@ -21,7 +21,7 @@
           <div class="icon-wrapper">
             <img src="/icons/phone.svg" alt="website" class="icon" />
           </div>
-          <a href="tel:+375259964261" class="text">+375 25 966-42-61</a>
+          <a href="tel:+375259964261" class="text">+375 25 996-42-61</a>
         </div>
       </div>
       <img src="/images/clover.webp" class="app-contacts__clover" alt="clover" />

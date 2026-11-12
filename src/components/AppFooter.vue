@@ -4,7 +4,7 @@
       <div class="app-footer__contacts">
         <div class="app-footer__contacts-title">Контакты</div>
         <div class="app-footer__contacts-links">
-          <a href="tel:+375259964261" class="app-footer__contact">+375 25 966-42-61</a>
+          <a href="tel:+375259964261" class="app-footer__contact">+375 25 996-42-61</a>
           <a
             href="https://instagram.com/i.kovalenko_beclever"
             target="_blank"

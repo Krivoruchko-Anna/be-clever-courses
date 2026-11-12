@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <div v-if="isPurchase" class="app-form__pay-method">
+      <div v-if="isPurchase && CARD_PAYMENT_ENABLED" class="app-form__pay-method">
         <button
           type="button"
           class="app-form__pay-method-btn"
@@ -87,7 +87,7 @@
           :class="{ '--active': paymentMethod === 'card' }"
           @click="paymentMethod = 'card'"
         >
-          Банковская карта
+          Картой онлайн
         </button>
       </div>
 
@@ -212,10 +212,10 @@ const props = defineProps({
     default: () => ({
       id: 'full-course',
       title: 'Вся программа',
-      price: '30 руб.', // запасная цена, актуальная подтягивается из БД по wooId
-      priceValue: 30,
+      price: '560 руб.', // запасная цена, актуальная подтягивается из БД по wooId
+      priceValue: 560,
       period: '/ 9 месяцев',
-      wooId: 30, // id товара в WooCommerce (api.irinakovalenko.by)
+      wooId: 46, // id товара в WooCommerce (api.irinakovalenko.by)
       eposInstruction: '',
     }),
   },
@@ -241,10 +241,15 @@ const emailError = ref('')
 
 const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
 
+// Оплата картой онлайн — через платёжную ссылку pay.raschet.by (подтверждено техподдержкой EPOS).
+// Классический WebPay-эквайринг отключён банком, но Raschet-ссылки работают: плагин сам
+// генерирует форму перехода на pay.raschet.by по выставленному счёту.
+const CARD_PAYMENT_ENABLED = true
+
 const paymentMethod = ref('erip') // 'erip' | 'card' — выбранный способ оплаты
 
 // id бесплатного товара «Пробный урок» в WooCommerce (цена 0, категория «Продажа на сайте»)
-const FREE_LESSON_WOO_ID = 37
+const FREE_LESSON_WOO_ID = 48
 
 const leadPhase = ref('idle') // idle | sending | done | error
 

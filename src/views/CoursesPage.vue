@@ -373,11 +373,11 @@ const audienceItems = [
 const pricingCards = reactive([
   {
     id: 'month',
-    wooId: 14, // id товара в WooCommerce (api.irinakovalenko.by)
+    wooId: 47, // id товара в WooCommerce (api.irinakovalenko.by)
     title: '1 месяц',
     badge: '',
-    price: '100 руб.',
-    priceValue: 100,
+    price: '70 руб.', // запасная цена, если бэкенд недоступен
+    priceValue: 70,
     period: '/ месяц',
     features: [
       'Доступ к урокам текущего месяца',
@@ -391,11 +391,11 @@ const pricingCards = reactive([
   },
   {
     id: 'full-course',
-    wooId: 30, // id товара в WooCommerce; цена подтягивается из БД (см. onMounted ниже)
+    wooId: 46, // id товара в WooCommerce; цена подтягивается из БД (см. onMounted ниже)
     title: 'Вся программа',
     badge: 'Выгоднее',
-    price: '30 руб.', // запасная цена, если бэкенд недоступен
-    priceValue: 30,
+    price: '560 руб.', // запасная цена, если бэкенд недоступен
+    priceValue: 560,
     period: '/ 9 месяцев',
     features: ['72 готовых урока', 'Полный комплект материалов сразу'],
     buttonText: 'Купить целиком',
@@ -405,22 +405,24 @@ const pricingCards = reactive([
   },
 ])
 
-// Актуальная цена полного курса — из БД WooCommerce, чтобы витрина не расходилась со счётом
+// Актуальные цены тарифов — из БД WooCommerce, чтобы витрина не расходилась со счётом
 onMounted(async () => {
-  const fullCourse = pricingCards.find((card) => card.id === 'full-course')
+  const cards = pricingCards.filter((card) => card.wooId)
 
-  if (!fullCourse?.wooId) return
+  await Promise.all(
+    cards.map(async (card) => {
+      try {
+        const product = await getProduct(card.wooId)
 
-  try {
-    const product = await getProduct(fullCourse.wooId)
-
-    if (product.price != null) {
-      fullCourse.price = formatPrice(Number(product.price))
-      fullCourse.priceValue = Number(product.price)
-    }
-  } catch {
-    // бэкенд недоступен — остаёмся на запасной цене из константы
-  }
+        if (product.price != null) {
+          card.price = formatPrice(Number(product.price))
+          card.priceValue = Number(product.price)
+        }
+      } catch {
+        // бэкенд недоступен — остаёмся на запасной цене из константы
+      }
+    }),
+  )
 })
 
 const promoCode = ref('')

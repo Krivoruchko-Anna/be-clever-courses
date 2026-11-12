@@ -85,7 +85,7 @@ import AppFooter from '@/components/AppFooter.vue'
 const contacts = [
   {
     title: 'Телефон',
-    value: '+375 25 966-42-61',
+    value: '+375 25 996-42-61',
     href: 'tel:+375259964261',
     icon: '/icons/phone.svg',
     external: false,
