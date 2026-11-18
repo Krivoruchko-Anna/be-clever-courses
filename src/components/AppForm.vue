@@ -134,10 +134,14 @@
       </div>
 
       <div v-if="showPaymentBlock" class="app-form__payment">
-        <div class="app-form__payment-title">Оплата через ЕРИП (EPOS)</div>
+        <div class="app-form__payment-title">Оплата</div>
 
         <div v-if="paymentPhase === 'creating'" class="app-form__payment-text">
           Счёт выставляется, пожалуйста, подождите…
+        </div>
+
+        <div v-else-if="paymentPhase === 'redirecting'" class="app-form__payment-text">
+          Открываем страницу оплаты…
         </div>
 
         <div
@@ -147,37 +151,7 @@
           {{ paymentError }}
         </div>
 
-        <template v-else-if="paymentPhase === 'awaiting'">
-          <div class="app-form__payment-text">
-            Счёт <strong>№{{ paymentBill.billNumber }}</strong> на сумму
-            <strong>{{ formatAmount(paymentBill.amount, paymentBill.currency) }}</strong> выставлен в
-            систему ЕРИП.
-          </div>
-          <div class="app-form__payment-text">{{ paymentBill.instruction }}</div>
-          <div class="app-form__payment-status">
-            Ожидаем оплату — статус обновится на этой странице автоматически.
-          </div>
-        </template>
-
-        <div
-          v-else-if="paymentPhase === 'paid'"
-          class="app-form__payment-text app-form__payment-text--success"
-        >
-          Оплата получена! Доступ к курсу будет отправлен на указанную почту.
-        </div>
-
-        <div v-else-if="paymentPhase === 'redirecting'" class="app-form__payment-text">
-          Счёт выставлен. Перенаправляем на страницу оплаты картой…
-        </div>
-
-        <div v-else-if="paymentPhase === 'expired'" class="app-form__payment-text">
-          Мы перестали отслеживать оплату в реальном времени. Если счёт уже оплачен — подтверждение
-          придёт на почту, а доступ к курсу откроется автоматически.
-        </div>
-
-        <div v-else class="app-form__payment-text">
-          {{ displayedPurchaseProduct?.eposInstruction || 'Здесь появится инструкция по оплате' }}
-        </div>
+        <div v-else class="app-form__payment-text">Здесь появится информация по оплате</div>
       </div>
     </div>
   </div>
@@ -187,7 +161,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import AppButton from '@/components/AppButton.vue'
 import { findPromoCode, formatPrice, getFinalPriceValue } from '@/constants/promoCodes'
-import { formatAmount, useOrderPayment } from '@/composables/useOrderPayment'
+import { useOrderPayment } from '@/composables/useOrderPayment'
 import { createLead, getProduct } from '@/api/client'
 
 const props = defineProps({
@@ -239,11 +213,12 @@ const submittedFormType = ref('')
 const phoneError = ref('')
 const emailError = ref('')
 
-const { paymentPhase, paymentError, paymentBill, startPayment } = useOrderPayment()
+const { paymentPhase, paymentError, startPayment } = useOrderPayment()
 
-// Оплата картой онлайн — через платёжную ссылку pay.raschet.by (подтверждено техподдержкой EPOS).
-// Классический WebPay-эквайринг отключён банком, но Raschet-ссылки работают: плагин сам
-// генерирует форму перехода на pay.raschet.by по выставленному счёту.
+// Переключатель способов оплаты. Сейчас обе кнопки (ЕРИП и Картой онлайн) ведут
+// на страницу оплаты pay.raschet.by. Позже «Картой онлайн» переключим на отдельный
+// карточный эквайринг — тогда вернётся ветвление по paymentMethod.
+// false = скрыть выбор способа, оплата пойдёт сразу на pay.raschet.by.
 const CARD_PAYMENT_ENABLED = true
 
 const paymentMethod = ref('erip') // 'erip' | 'card' — выбранный способ оплаты
@@ -487,7 +462,8 @@ const handleSubmit = () => {
       phone: phone.value,
       email: contact.value,
       promoCode: promoCode.value,
-      payBy: paymentMethod.value,
+      // способ (paymentMethod) пока не влияет на сценарий: обе кнопки ведут
+      // на pay.raschet.by; когда появится свой карточный эквайринг — вернём ветвление
     })
     submitMessage.value = 'Заявка сформирована. Ниже показан блок для оплаты.'
   } else {
