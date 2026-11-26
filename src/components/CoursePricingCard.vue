@@ -1,7 +1,7 @@
 <template>
   <div class="course-pricing-card" :class="{ 'course-pricing-card--highlighted': highlighted }">
     <div class="course-pricing-card__wrapper">
-      <div>
+      <div class="course-pricing-card__info">
         <div v-if="badge" class="course-pricing-card__badge">{{ badge }}</div>
         <div class="course-pricing-card__title">{{ title }}</div>
         <div class="course-pricing-card__price-wrapper">
@@ -15,6 +15,8 @@
             {{ feature }}
           </li>
         </ul>
+
+        <p class="course-pricing-card__note">* После оплаты материалы придут вам на электронную почту</p>
       </div>
       <div class="course-pricing-card__purchase">
         <button
@@ -248,6 +250,12 @@ const handlePurchaseClick = () => {
     flex-direction: column;
   }
 
+  &__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   &__badge {
     position: absolute;
     top: -14px;
@@ -311,6 +319,14 @@ const handlePurchaseClick = () => {
     & + & {
       margin-top: 6px;
     }
+  }
+
+  &__note {
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--dove-gray);
+    font-size: 14px;
+    line-height: 17px;
   }
 
   &__purchase {

@@ -383,7 +383,6 @@ const pricingCards = reactive([
       'Доступ к урокам текущего месяца',
       'Все материалы месяца',
       'Можно продлевать по ходу года',
-      'После оплаты материалы придут вам на электронную почту',
     ],
     buttonText: 'Купить 1 месяц',
     buttonType: 'green-outline',
@@ -398,11 +397,7 @@ const pricingCards = reactive([
     price: '560 руб.', // запасная цена, если бэкенд недоступен
     priceValue: 560,
     period: '/ 9 месяцев',
-    features: [
-      '72 готовых урока',
-      'Полный комплект материалов сразу',
-      'После оплаты материалы придут вам на электронную почту',
-    ],
+    features: ['72 готовых урока', 'Полный комплект материалов сразу'],
     buttonText: 'Купить целиком',
     buttonType: 'orange',
     highlighted: true,
@@ -750,8 +745,12 @@ onBeforeUnmount(() => {
     margin-top: 42px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 28px;
+  }
+
+  &__pricing-item {
+    display: flex;
   }
 
   &__questions-cta {
