@@ -32,6 +32,10 @@
           Промокод {{ appliedPromoCode.code }} применён. Скидка
           {{ appliedPromoCode.discountPercent }}%.
         </div>
+
+        <div v-if="isPurchase" class="app-form__product-delivery">
+          После оплаты материалы придут вам на электронную почту
+        </div>
       </div>
 
       <div class="app-form__hint">{{ hintText }}</div>
@@ -575,6 +579,13 @@ const handleSubmit = () => {
     color: var(--dove-gray);
     font-size: 14px;
     font-weight: 500;
+  }
+
+  &__product-delivery {
+    margin-top: 8px;
+    color: var(--dove-gray);
+    font-size: 13px;
+    line-height: 18px;
   }
 
   &__link {

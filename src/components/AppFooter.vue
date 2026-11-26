@@ -24,8 +24,8 @@
             class="app-footer__contact"
             >i.kovalenko_beclever</a
           >
-          <a href="https://beclever.by/" target="_blank" class="app-footer__contact"
-            >www.beclever.by</a
+          <a href="https://t.me/Irina_kovalenko_beclever" target="_blank" class="app-footer__contact"
+            >@Irina_kovalenko_beclever</a
           >
           <a href="mailto:kovalenko.irene@yandex.ru" class="app-footer__contact"
             >Kovalenko.irene@yandex.ru</a

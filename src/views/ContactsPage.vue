@@ -98,10 +98,10 @@ const contacts = [
     external: false,
   },
   {
-    title: 'Сайт',
-    value: 'www.beclever.by',
-    href: 'https://beclever.by/',
-    icon: '/icons/website.svg',
+    title: 'Telegram',
+    value: '@Irina_kovalenko_beclever',
+    href: 'https://t.me/Irina_kovalenko_beclever',
+    icon: '/icons/telegram-outline.svg',
     external: true,
   },
   {

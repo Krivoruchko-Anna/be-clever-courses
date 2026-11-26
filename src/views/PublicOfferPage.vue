@@ -48,8 +48,8 @@
               <dd>
                 настоящий документ, публичный договор. Публикация текста публичного договора на
                 сайте
-                <a href="https://be-clever-courses.by/" target="_blank" rel="noopener noreferrer">
-                  https://be-clever-courses.by/
+                <a href="https://irinakovalenko.by" target="_blank" rel="noopener noreferrer">
+                  https://irinakovalenko.by
                 </a>
                 является публичным предложением, адресованным широкому кругу лиц с целью оказания
                 определенных видов услуг. Фактом, подтверждающим заключение публичного договора со
@@ -75,8 +75,8 @@
               <dt>Прейскурант</dt>
               <dd>
                 опубликованный перечень услуг Исполнителя, их стоимость по сетевому адресу
-                <a href="https://be-clever-courses.by/" target="_blank" rel="noopener noreferrer">
-                  https://be-clever-courses.by/
+                <a href="https://irinakovalenko.by" target="_blank" rel="noopener noreferrer">
+                  https://irinakovalenko.by
                 </a>
                 или в анонсе мероприятия.
               </dd>
@@ -99,8 +99,8 @@
             <strong>2.2.</strong> Исполнитель вправе вносить изменения в настоящий Договор, в связи
             с чем, Заказчик обязуется перед получением Услуг ознакомиться с актуальной версией
             Договора. Актуальный договор-оферта всегда находится по сетевому адресу
-            <a href="https://be-clever-courses.by/" target="_blank" rel="noopener noreferrer">
-              https://be-clever-courses.by/
+            <a href="https://irinakovalenko.by" target="_blank" rel="noopener noreferrer">
+              https://irinakovalenko.by
             </a>
           </p>
         </section>
@@ -117,8 +117,8 @@
 
           <p>
             <strong>3.2.</strong> Размещение текста настоящего Договора на сайте Исполнителя
-            <a href="https://be-clever-courses.by/" target="_blank" rel="noopener noreferrer">
-              https://be-clever-courses.by/
+            <a href="https://irinakovalenko.by" target="_blank" rel="noopener noreferrer">
+              https://irinakovalenko.by
             </a>
             является офертой Исполнителя, адресованной физическому лицу (лицам) – Заказчику
             (Заказчикам) заключить настоящий Договор, согласно п.2. ст.407 Гражданского кодекса
@@ -214,8 +214,8 @@
             <strong>5.1.</strong> Стоимость Услуг, предоставляемых согласно данной публичной оферте,
             определяется исходя из выбранного Заказчиком вида услуг, указанного в прейскуранте
             Исполнителя, размещенном по адресу
-            <a href="https://be-clever-courses.by/" target="_blank" rel="noopener noreferrer">
-              https://be-clever-courses.by/
+            <a href="https://irinakovalenko.by" target="_blank" rel="noopener noreferrer">
+              https://irinakovalenko.by
             </a>
           </p>
 

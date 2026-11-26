@@ -5,9 +5,11 @@
         <h2 class="app-contacts__title">Наши контакты</h2>
         <div class="app-contacts__contact">
           <div class="icon-wrapper">
-            <img src="/icons/website.svg" alt="website" class="icon" />
+            <img src="/icons/telegram-outline.svg" alt="telegram" class="icon" />
           </div>
-          <a href="https://beclever.by/" target="_blank" class="text">www.beclever.by</a>
+          <a href="https://t.me/Irina_kovalenko_beclever" target="_blank" class="text"
+            >@Irina_kovalenko_beclever</a
+          >
         </div>
         <div class="app-contacts__contact">
           <div class="icon-wrapper">
